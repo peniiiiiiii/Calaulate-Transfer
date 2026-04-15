@@ -142,11 +142,24 @@ body {
   letter-spacing: 0.03em;
   font-weight: 300;
 }
+.edit-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: default;
+  flex-shrink: 0;
+  transition: color 200ms, border-color 200ms;
+}
+.edit-badge:hover { color: var(--accent); border-color: #E8D9B8; }
 
 input, select {
   height: 36px;
   padding: 0 10px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 300;
   font-family: var(--font);
   letter-spacing: 0.03em;
@@ -445,6 +458,100 @@ input:focus-visible, select:focus-visible {
 .jc-metric.accent .m-sub { color: var(--accent); opacity: .7; }
 
 input::placeholder { color: var(--text-muted); }
+
+/* ── Mobile / LIFF 優化 ──────────────────────────────── */
+@media (max-width: 480px) {
+  body { font-size: 15px; padding: 0 0 100px; }
+
+  /* header 壓縮：LIFF 頂部已有 LINE nav bar */
+  .site-header { padding: 20px 0 0; margin-bottom: 20px; }
+  .site-header h1 { font-size: 18px; }
+
+  /* mode tabs 更大的 touch target */
+  .mode-tabs { margin-bottom: 24px; }
+  .mode-tab  { padding: 14px 0; font-size: 14px; }
+
+  /* section 間距縮小 */
+  .section-group { margin-bottom: 14px; }
+  .section-head  { padding: 14px 16px 0; }
+  .section-body  { padding: 12px 16px 16px; }
+
+  /* 輸入框高度符合 44px touch target */
+  input, select { height: 44px; font-size: 16px; padding: 0 12px; }
+  /* iOS 防止自動 zoom：font-size 需 ≥ 16px */
+  select { font-size: 16px; }
+
+  /* grid 間距 */
+  .grid-3 { gap: 8px; }
+  .grid-2 { gap: 8px; }
+
+  /* 匯率欄位標籤排版 */
+  .field > label { font-size: 12px; gap: 5px; }
+  .tag { font-size: 10px; }
+
+  /* 採購成本數字 */
+  .cost-value { font-size: 20px; }
+  .cost-label { font-size: 11px; }
+  .cost-fee   { font-size: 11px; }
+  .cost-block { padding: 14px 0 16px; }
+
+  /* 匯率狀態列 */
+  .rate-status { margin-top: 5px; }
+  .rate-msg    { font-size: 11px; }
+
+  /* pound hint */
+  .pound-hint { font-size: 11px; padding: 6px 10px; }
+
+  /* Jellycat 公式 */
+  .jc-divider-block { padding: 14px 16px 16px; margin: 0 -16px -16px; }
+  .jc-formula       { gap: 8px; padding: 12px 0 10px; }
+  .jc-num           { font-size: 22px; }
+  #jc_mult          { width: 54px; height: 40px; font-size: 16px; }
+
+  /* 三欄結果卡：縮小字體讓三欄不溢出 */
+  .s-metric          { padding: 14px 12px; }
+  .s-metric .sm-lbl  { font-size: 9px; margin-bottom: 5px; }
+  .s-metric .sm-val  { font-size: 18px; }
+  .s-metric .sm-sub  { font-size: 10px; margin-top: 3px; }
+
+  /* 總成本 accordion toggle */
+  .breakdown-toggle        { padding: 14px 16px; }
+  .breakdown-toggle .bt-label { font-size: 14px; }
+  .breakdown-toggle .bt-val   { font-size: 16px; gap: 8px; }
+
+  /* 明細列 */
+  .breakdown   { padding: 0 16px; }
+  .b-row       { padding: 12px 0; font-size: 14px; }
+
+  /* 利潤預設按鈕 */
+  .preset-btn { height: 36px; padding: 0 12px; font-size: 13px; }
+
+  /* 建議售價 section */
+  #card-suggest .section-body { padding: 12px 16px 16px; }
+
+  /* 複製按鈕：大且好按 */
+  .copy-btn {
+    height: 52px;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    margin-top: 16px;
+  }
+
+  /* footer */
+  .site-footer { margin-top: 20px; }
+  .site-footer p { font-size: 11px; line-height: 1.9; }
+
+  /* 紀錄卡片 */
+  .rec-card    { padding: 14px; }
+  .rec-nums    { }
+  .rec-num     { padding: 10px 10px; }
+  .rec-num .rn-val { font-size: 13px; }
+  .clear-btn   { height: 44px; font-size: 12px; }
+
+  /* 展開收合 chevron 更大的 hit area */
+  .st-chevron  { width: 24px; height: 24px; }
+  .bt-chevron  { width: 20px; height: 20px; }
+}
 
 /* ── Summary Metrics (3-col) ─────────────────────────── */
 .summary-metrics {
@@ -826,7 +933,14 @@ input::placeholder { color: var(--text-muted); }
             </div>
             <div class="grid-2 mt-12">
               <div class="field">
-                <label>國際運費（TWD）<span class="tag">可手動覆蓋</span></label>
+                <label>
+                  國際運費（TWD）
+                  <span class="edit-badge" title="可手動覆蓋自動估算值">
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M8.5 1.5l2 2L4 10H2v-2L8.5 1.5z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                </label>
                 <input type="number" id="shipping" value="0" min="0" step="1" />
               </div>
               <div class="field">
@@ -1168,23 +1282,26 @@ function calc() {
     $('pound-hint').style.display = 'none';
   }
 
-  const ship    = parseFloat($('shipping').value) || 0;
-  const totalCost = Math.round(itemTWD + ship);   /* 商品成本 + 運費，供 cost block 顯示 */
+  const ship      = parseFloat($('shipping').value) || 0;
+  const svcFee    = Math.round(itemTWD * svcPct / 100);
+  const totalCost = Math.round(itemTWD + ship + svcFee);
 
   const costEl = $('item_cost_twd');
   const feeEl  = $('cost-fee-hint');
   if (rate > 0 && itemTWD > 0) {
     costEl.textContent = 'NT$ ' + totalCost.toLocaleString();
     costEl.classList.remove('empty');
-    feeEl.innerHTML = `<span>商品 NT$ ${Math.round(itemTWD).toLocaleString()}（含手續費 ${Math.round(feeAmt).toLocaleString()}）</span>${ship > 0 ? `<span>運費 NT$ ${ship.toLocaleString()}</span>` : ''}`;
+    let lines = `<span>商品 NT$ ${Math.round(itemTWD).toLocaleString()}（含手續費 ${Math.round(feeAmt).toLocaleString()}）</span>`;
+    if (ship > 0)   lines += `<span>運費 NT$ ${ship.toLocaleString()}</span>`;
+    if (svcFee > 0) lines += `<span>服務費 NT$ ${svcFee.toLocaleString()}</span>`;
+    feeEl.innerHTML     = lines;
     feeEl.style.display = '';
   } else {
     costEl.textContent = '—';
     costEl.classList.add('empty');
     feeEl.style.display = 'none';
   }
-  const svcFee = Math.round(itemTWD * svcPct / 100);
-  const total  = Math.round(itemTWD + ship + svcFee);
+  const total  = totalCost;
   const suggest = profitPct < 100 ? Math.round(total / (1 - profitPct / 100)) : NaN;
   const profit  = isNaN(suggest) ? NaN : suggest - total;
 
