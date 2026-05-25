@@ -5,1062 +5,496 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>代購試算</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
 <style>
-/* ── S05 Tokens ──────────────────────────────────────── */
 :root {
-  --bg:           #FAF9F6;
-  --surface:      #FFFFFF;
-  --text-primary: #2D2D2D;
-  --text-secondary:#5A5A5A;
-  --text-muted:   #9CA3AF;
-  --accent:       #C5A059;
-  --accent-light: #FBF5E9;
-  --border:       #E5E7EB;
-  --border-subtle:#F3F4F6;
-  --success:      #4A7C59;
-  --success-bg:   #F1F7F3;
-  --error:        #9B3A3A;
-  --r:            2px;
-  --font: 'Noto Sans JP', 'Hiragino Kaku Gothic Pro', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --bg:        #FFFFFF;
+  --bg2:       #EEECFA;
+  --surface:   #FFFFFF;
+  --surface2:  #F6F5FF;
+  --text1:     #201B5C;
+  --text2:     #5850A0;
+  --text3:     #9890C4;
+  --gold:      #C09040;
+  --gold-bg:   #FDF6E8;
+  --gold-dark: #8A6420;
+  --indigo:    #4A50D0;
+  --indigo-bg: #ECEFFE;
+  --indigo-drk:#2830A8;
+  --green:     #2A7A4A;
+  --green-bg:  #E8F5EE;
+  --red:       #C03030;
+  --r-xs: 8px;
+  --r-sm: 12px;
+  --r-md: 20px;
+  --r-lg: 24px;
+  --r-pill: 100px;
+  --sh-sm: 0 2px 12px rgba(40,32,100,0.08);
+  --sh-md: 0 4px 20px rgba(40,32,100,0.10);
+  --sh-lg: 0 8px 32px rgba(40,32,100,0.13);
+  --font: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'PingFang TC', sans-serif;
+  --ease: cubic-bezier(0.4,0,0.2,1);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
 body {
   font-family: var(--font);
-  font-weight: 300;
   background: var(--bg);
-  color: var(--text-primary);
-  font-size: 14px;
-  line-height: 1.7;
-  letter-spacing: 0.04em;
+  color: var(--text1);
+  font-size: 15px;
+  line-height: 1.6;
   min-height: 100vh;
-  padding: 0 0 80px;
+  padding: 0 0 96px;
 }
 
-.wrap {
-  max-width: 540px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
+.wrap { max-width: 540px; margin: 0 auto; padding: 0 16px; }
 
-/* ── Header ──────────────────────────────────────────── */
+/* ── Header ── */
 .site-header {
-  padding: 40px 0 0;
-  margin-bottom: 32px;
+  padding: 32px 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
 }
-.site-header h1 {
-  font-size: 20px;
-  font-weight: 300;
-  letter-spacing: 0.06em;
-  color: var(--text-primary);
-}
-.site-header p {
-  font-size: 12px;
-  color: var(--text-muted);
-  letter-spacing: 0.06em;
-  margin-top: 4px;
-}
+.site-header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: var(--text1); }
+.site-header p  { font-size: 12px; color: var(--text3); margin-top: 4px; }
 
-/* ── Mode Toggle ─────────────────────────────────────── */
+/* ── Mode Toggle ── */
 .mode-tabs {
   display: flex;
-  gap: 0;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 36px;
+  background: var(--bg2);
+  border-radius: var(--r-pill);
+  padding: 4px;
+  gap: 4px;
+  margin-bottom: 20px;
+  box-shadow: inset 0 1px 4px rgba(40,32,100,0.10);
 }
 .mode-tab {
-  padding: 10px 0;
-  margin-right: 28px;
-  font-size: 13px;
-  font-weight: 300;
+  flex: 1; height: 40px;
+  border-radius: var(--r-pill);
+  font-size: 14px; font-weight: 500;
   font-family: var(--font);
-  letter-spacing: 0.05em;
-  color: var(--text-muted);
-  background: none;
-  border: none;
-  border-bottom: 1px solid transparent;
-  margin-bottom: -1px;
-  cursor: pointer;
-  transition: color 300ms var(--ease), border-color 300ms var(--ease);
-}
-.mode-tab:hover { color: var(--text-secondary); }
-.mode-tab.active {
-  color: var(--text-primary);
-  border-bottom-color: var(--text-primary);
-}
-.mode-tab.active.jc {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
-}
-
-/* ── Section ─────────────────────────────────────────── */
-.section {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  margin-bottom: 1px;
-}
-.section:first-of-type { border-radius: var(--r) var(--r) 0 0; }
-.section:last-of-type  { border-radius: 0 0 var(--r) var(--r); margin-bottom: 0; }
-.section.solo { border-radius: var(--r); }
-
-.section-head {
-  padding: 18px 20px 0;
-}
-.section-body {
-  padding: 16px 20px 20px;
-}
-.section-label {
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 16px;
-}
-
-/* ── Form Fields ─────────────────────────────────────── */
-.field { display: flex; flex-direction: column; gap: 6px; }
-.field > label {
-  font-size: 11px;
-  font-weight: 300;
-  color: var(--text-muted);
-  letter-spacing: 0.07em;
-  display: flex; align-items: center; gap: 6px;
-}
-.tag {
-  font-size: 10px;
-  padding: 1px 5px;
-  border: 1px solid #E8D9B8;
-  border-radius: var(--r);
-  color: var(--accent);
-  letter-spacing: 0.03em;
-  font-weight: 300;
-}
-.edit-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 16px; height: 16px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-  cursor: default;
-  flex-shrink: 0;
-  transition: color 200ms, border-color 200ms;
-}
-.edit-badge:hover { color: var(--accent); border-color: #E8D9B8; }
-
-input, select {
-  height: 36px;
-  padding: 0 10px;
-  font-size: 16px;
-  font-weight: 300;
-  font-family: var(--font);
-  letter-spacing: 0.03em;
-  color: var(--text-primary);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  width: 100%;
-  -webkit-appearance: none;
-  appearance: none;
-  transition: border-color 300ms var(--ease);
-}
-select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239CA3AF' stroke-width='1' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  padding-right: 28px;
-  cursor: pointer;
-}
-input:focus, select:focus {
-  outline: none;
-  border-color: var(--text-primary);
-}
-input:focus-visible, select:focus-visible {
-  box-shadow: 0 0 0 2px rgba(45,45,45,0.12);
-}
-
-.grid-3 { display: grid; grid-template-columns: 2fr 2fr 1fr; gap: 12px; }
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.mt-12 { margin-top: 12px; }
-.mt-16 { margin-top: 16px; }
-
-/* ── Cost Display ────────────────────────────────────── */
-.cost-block {
-  margin-top: 16px;
-  padding: 16px 0 20px;
-  border-top: 1px solid var(--border-subtle);
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-}
-.cost-label {
-  font-size: 11px;
-  color: var(--text-muted);
-  letter-spacing: 0.07em;
-}
-.cost-value-wrap { text-align: right; }
-.cost-value {
-  font-size: 22px;
-  font-weight: 300;
-  color: var(--text-primary);
-  letter-spacing: -0.01em;
-}
-.cost-value.empty { font-size: 16px; color: var(--text-muted); }
-.cost-fee {
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-top: 3px;
-  letter-spacing: 0.03em;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  text-align: right;
-}
-
-/* ── Breakdown Accordion ─────────────────────────────── */
-.breakdown-toggle {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 20px;
-  cursor: pointer;
-  user-select: none;
-  background: var(--surface);
-  border-top: 1px solid var(--border-subtle);
-  transition: background 200ms var(--ease);
-}
-.breakdown-toggle:hover { background: var(--border-subtle); }
-.breakdown-toggle .bt-label {
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--text-primary);
-  letter-spacing: 0.03em;
-}
-.breakdown-toggle .bt-val {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 15px;
-  font-weight: 400;
-  color: var(--text-primary);
-  letter-spacing: 0.02em;
-}
-.breakdown-toggle .bt-chevron {
-  width: 14px; height: 14px;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--text-muted);
-  transition: transform 300ms var(--ease);
-}
-.breakdown-toggle .bt-chevron svg { width: 10px; height: 10px; }
-.breakdown-toggle.open .bt-chevron { transform: rotate(90deg); }
-
-.breakdown-panel {
-  overflow: hidden;
-  max-height: 0;
-  opacity: 0;
-  transition: max-height 350ms var(--ease), opacity 250ms var(--ease);
-}
-.breakdown-panel.open {
-  max-height: 400px;
-  opacity: 1;
-}
-
-/* ── Rate Status ─────────────────────────────────────── */
-.rate-status {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 6px;
-  min-height: 16px;
-}
-.dot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  background: var(--text-muted);
-  transition: background 400ms var(--ease);
-}
-.dot.ok  { background: var(--success); }
-.dot.err { background: var(--error); }
-.dot.spin { background: var(--accent); animation: pulse 1.2s ease-in-out infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.2} }
-.rate-msg { font-size: 11px; color: var(--text-muted); letter-spacing: 0.03em; }
-.rate-msg.ok  { color: var(--success); }
-.rate-msg.err { color: var(--error); }
-.retry-btn {
-  font-size: 11px;
-  color: var(--accent);
-  background: none; border: none;
-  cursor: pointer; font-family: var(--font);
-  text-decoration: underline; padding: 0;
-  letter-spacing: 0.03em;
-}
-
-/* ── Pound Hint ──────────────────────────────────────── */
-.pound-hint {
-  display: none;
-  justify-content: space-between;
-  font-size: 11px;
-  color: var(--text-muted);
-  background: var(--border-subtle);
-  border-radius: var(--r);
-  padding: 6px 10px;
-  margin-top: 8px;
-  letter-spacing: 0.03em;
-}
-
-/* ── Preset Buttons ──────────────────────────────────── */
-.preset-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-bottom: 14px;
-}
-.preset-row .lbl {
-  font-size: 11px;
-  color: var(--text-muted);
-  letter-spacing: 0.05em;
-  white-space: nowrap;
-}
-.preset-btn {
-  font-size: 12px;
-  font-weight: 300;
-  font-family: var(--font);
-  padding: 3px 10px;
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
-  letter-spacing: 0.03em;
-  transition: all 300ms var(--ease);
-}
-.preset-btn:hover { border-color: var(--text-secondary); color: var(--text-secondary); }
-.preset-btn.active {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: var(--accent-light);
-}
-
-/* ── JC Divider Block ────────────────────────────────── */
-.jc-divider-block {
-  margin: 0 -20px -20px;
-  padding: 16px 20px 20px;
-  background: var(--accent-light);
-  border-top: 1px solid #E8D9B8;
-}
-.jc-divider-label {
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent);
-  opacity: .8;
-  margin-bottom: 4px;
-}
-
-/* ── Jellycat Formula ────────────────────────────────── */
-.jc-formula {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  padding: 16px 0 14px;
-}
-.jc-lbl {
-  font-size: 12px;
-  color: var(--text-muted);
-  letter-spacing: 0.06em;
-}
-.jc-op {
-  font-size: 16px;
-  font-weight: 300;
-  color: var(--text-muted);
-}
-#jc_mult {
-  width: 60px;
-  height: 34px;
-  text-align: center;
-  font-size: 18px;
-  font-weight: 300;
-  color: var(--accent);
-  border-color: #E8D9B8;
-  background: var(--accent-light);
-  letter-spacing: 0;
-  padding: 0 6px;
-}
-#jc_mult:focus { border-color: var(--accent); }
-.jc-eq { font-size: 16px; color: var(--text-muted); }
-.jc-price-result {
-  margin-left: auto;
-  text-align: right;
-}
-.jc-price-result .jc-currency {
-  font-size: 11px;
-  color: var(--text-muted);
-  letter-spacing: 0.05em;
-}
-.jc-price-result .jc-num {
-  font-size: 26px;
-  font-weight: 300;
-  color: var(--text-primary);
-  letter-spacing: -0.02em;
-  margin-left: 3px;
-}
-
-/* ── JC Metrics ──────────────────────────────────────── */
-.jc-metrics {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  overflow: hidden;
-}
-.jc-metric {
-  background: var(--surface);
-  padding: 14px 16px;
-}
-.jc-metric.accent { background: var(--accent-light); }
-.jc-metric .m-lbl {
-  font-size: 10px;
-  color: var(--text-muted);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-.jc-metric.accent .m-lbl { color: var(--accent); opacity: .8; }
-.jc-metric .m-val {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--text-primary);
-  letter-spacing: -0.01em;
-  line-height: 1.2;
-}
-.jc-metric.accent .m-val { color: var(--accent); }
-.jc-metric .m-sub {
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-top: 3px;
-  letter-spacing: 0.02em;
-  line-height: 1.4;
-}
-.jc-metric.accent .m-sub { color: var(--accent); opacity: .7; }
-
-input::placeholder { color: var(--text-muted); }
-
-/* ── Mobile / LIFF 優化 ──────────────────────────────── */
-@media (max-width: 480px) {
-  body { font-size: 15px; padding: 0 0 100px; }
-
-  /* header 壓縮：LIFF 頂部已有 LINE nav bar */
-  .site-header { padding: 20px 0 0; margin-bottom: 20px; }
-  .site-header h1 { font-size: 18px; }
-
-  /* mode tabs 更大的 touch target */
-  .mode-tabs { margin-bottom: 24px; }
-  .mode-tab  { padding: 14px 0; font-size: 14px; }
-
-  /* section 間距縮小 */
-  .section-group { margin-bottom: 14px; }
-  .section-head  { padding: 14px 16px 0; }
-  .section-body  { padding: 12px 16px 16px; }
-
-  /* 輸入框高度符合 44px touch target */
-  input, select { height: 44px; font-size: 16px; padding: 0 12px; }
-  /* iOS 防止自動 zoom：font-size 需 ≥ 16px */
-  select { font-size: 16px; }
-
-  /* grid 間距 */
-  .grid-3 { gap: 8px; }
-  .grid-2 { gap: 8px; }
-
-  /* 匯率欄位標籤排版 */
-  .field > label { font-size: 12px; gap: 5px; }
-  .tag { font-size: 10px; }
-
-  /* 採購成本數字 */
-  .cost-value { font-size: 20px; }
-  .cost-label { font-size: 11px; }
-  .cost-fee   { font-size: 11px; }
-  .cost-block { padding: 14px 0 16px; }
-
-  /* 匯率狀態列 */
-  .rate-status { margin-top: 5px; }
-  .rate-msg    { font-size: 11px; }
-
-  /* pound hint */
-  .pound-hint { font-size: 11px; padding: 6px 10px; }
-
-  /* Jellycat 公式 */
-  .jc-divider-block { padding: 14px 16px 16px; margin: 0 -16px -16px; }
-  .jc-formula       { gap: 8px; padding: 12px 0 10px; }
-  .jc-num           { font-size: 22px; }
-  #jc_mult          { width: 54px; height: 40px; font-size: 16px; }
-
-  /* 三欄結果卡：縮小字體讓三欄不溢出 */
-  .s-metric          { padding: 14px 12px; }
-  .s-metric .sm-lbl  { font-size: 9px; margin-bottom: 5px; }
-  .s-metric .sm-val  { font-size: 18px; }
-  .s-metric .sm-sub  { font-size: 10px; margin-top: 3px; }
-
-  /* 總成本 accordion toggle */
-  .breakdown-toggle        { padding: 14px 16px; }
-  .breakdown-toggle .bt-label { font-size: 14px; }
-  .breakdown-toggle .bt-val   { font-size: 16px; gap: 8px; }
-
-  /* 明細列 */
-  .breakdown   { padding: 0 16px; }
-  .b-row       { padding: 12px 0; font-size: 14px; }
-
-  /* 利潤預設按鈕 */
-  .preset-btn { height: 36px; padding: 0 12px; font-size: 13px; }
-
-  /* 建議售價 section */
-  #card-suggest .section-body { padding: 12px 16px 16px; }
-
-  /* 複製按鈕：大且好按 */
-  .copy-btn {
-    height: 52px;
-    font-size: 14px;
-    letter-spacing: 0.1em;
-    margin-top: 16px;
-  }
-
-  /* footer */
-  .site-footer { margin-top: 20px; }
-  .site-footer p { font-size: 11px; line-height: 1.9; }
-
-  /* 紀錄卡片 */
-  .rec-card    { padding: 14px; }
-  .rec-nums    { }
-  .rec-num     { padding: 10px 10px; }
-  .rec-num .rn-val { font-size: 13px; }
-  .clear-btn   { height: 44px; font-size: 12px; }
-
-  /* 展開收合 chevron 更大的 hit area */
-  .st-chevron  { width: 24px; height: 24px; }
-  .bt-chevron  { width: 20px; height: 20px; }
-}
-
-/* ── Summary Metrics (3-col) ─────────────────────────── */
-.summary-metrics {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  border-radius: var(--r) var(--r) 0 0;
-  overflow: hidden;
-  margin-bottom: 0;
-}
-.s-metric { background: var(--surface); padding: 18px 20px; }
-.s-metric.profit { background: var(--success-bg); }
-.s-metric .sm-lbl {
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-}
-.s-metric.profit .sm-lbl { color: var(--success); opacity: .8; }
-.s-metric .sm-val {
-  font-size: 24px;
-  font-weight: 300;
-  color: var(--text-primary);
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-}
-.s-metric.profit .sm-val { color: var(--success); }
-.s-metric .sm-sub {
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-top: 5px;
-  letter-spacing: 0.02em;
-  line-height: 1.5;
-}
-.s-metric.profit .sm-sub { color: var(--success); opacity: .7; }
-
-/* ── Breakdown ───────────────────────────────────────── */
-.breakdown {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-top: none;
-  border-radius: 0 0 var(--r) var(--r);
-  padding: 0 20px;
-}
-.b-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--border-subtle);
-  font-size: 13px;
-}
-.b-row:last-child { border-bottom: none; }
-.b-row .bl { color: var(--text-secondary); font-weight: 300; }
-.b-row .bv { color: var(--text-primary); font-weight: 400; letter-spacing: 0.02em; }
-.b-row.b-total {
-  padding: 14px 0;
-  border-top: 1px solid var(--border);
-  border-bottom: none;
-  margin-top: 2px;
-}
-.b-row.b-total .bl { color: var(--text-primary); font-weight: 400; font-size: 13px; }
-.b-row.b-total .bv { font-size: 16px; }
-.b-row.b-suggest .bv,
-.b-row.b-suggest .bl { color: var(--text-secondary); }
-.b-row.b-jc .bl { color: var(--accent); }
-.b-row.b-jc .bv { color: var(--accent); font-size: 15px; }
-
-/* ── Copy Button ─────────────────────────────────────── */
-.copy-btn {
-  width: 100%;
-  height: 44px;
-  margin-top: 20px;
-  border: 1px solid var(--text-primary);
-  border-radius: var(--r);
-  background: transparent;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 300;
-  font-family: var(--font);
-  color: var(--text-primary);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  transition: all 300ms var(--ease);
-}
-.copy-btn:hover { background: var(--text-primary); color: var(--surface); }
-.copy-btn:active { opacity: .7; }
-.copy-btn.copied {
-  border-color: var(--success);
-  color: var(--success);
-  background: var(--success-bg);
-}
-
-/* ── Footer ──────────────────────────────────────────── */
-.site-footer {
-  margin-top: 28px;
-  padding-top: 20px;
-  border-top: 1px solid var(--border-subtle);
-}
-.site-footer p {
-  font-size: 11px;
-  color: var(--text-muted);
-  letter-spacing: 0.04em;
-  line-height: 2;
-}
-
-/* ── Section group spacing ───────────────────────────── */
-.section-group { margin-bottom: 20px; }
-.section-group > .section:not(:last-child) {
-  border-bottom: none;
-  border-radius: 0;
-}
-.section-group > .section:first-child { border-radius: var(--r) var(--r) 0 0; }
-.section-group > .section:last-child  { border-radius: 0 0 var(--r) var(--r); }
-.section-group > .section:only-child  { border-radius: var(--r); }
-
-/* ── Page Tabs (segment control) ────────────────────── */
-.page-tabs {
-  display: flex;
-  background: var(--border-subtle);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 3px;
-  gap: 3px;
-  margin-bottom: 28px;
-}
-.page-tab {
-  flex: 1;
-  height: 32px;
-  border-radius: 2px;
-  font-size: 12px;
-  font-weight: 300;
-  font-family: var(--font);
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
-  background: transparent;
-  border: none;
+  color: var(--text3);
+  background: transparent; border: none;
   cursor: pointer;
   transition: all 250ms var(--ease);
-}
-.page-tab:hover { color: var(--text-secondary); }
-.page-tab.active {
-  background: var(--surface);
-  color: var(--text-primary);
-  border: 1px solid var(--border);
-}
-
-/* ── Collapsible Shipping ────────────────────────────── */
-.shipping-toggle {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 13px 0 0;
-  margin-top: 13px;
-  border-top: 1px solid var(--border-subtle);
-  cursor: pointer;
-  user-select: none;
-}
-.shipping-toggle .st-label {
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  transition: color 250ms var(--ease);
-}
-.shipping-toggle:hover .st-label { color: var(--text-secondary); }
-.shipping-toggle .st-chevron {
-  width: 14px; height: 14px;
-  display: flex; align-items: center; justify-content: center;
-  transition: transform 300ms var(--ease);
-  color: var(--text-muted);
-}
-.shipping-toggle .st-chevron svg {
-  width: 10px; height: 10px;
-}
-.shipping-toggle.open .st-chevron { transform: rotate(90deg); }
-.shipping-toggle.open .st-label   { color: var(--text-secondary); }
-
-.shipping-panel {
-  overflow: hidden;
-  max-height: 0;
-  opacity: 0;
-  transition: max-height 350ms var(--ease), opacity 250ms var(--ease);
-}
-.shipping-panel.open {
-  max-height: 300px;
-  opacity: 1;
-}
-.shipping-panel-inner { padding-top: 14px; }
-
-/* ── Record Cards ────────────────────────────────────── */
-#tab-records { display: none; }
-.rec-empty {
-  padding: 48px 0;
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 13px;
-  letter-spacing: 0.06em;
-  line-height: 2;
-}
-.rec-list { margin-bottom: 20px; }
-.rec-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 16px 18px;
-  margin-bottom: 8px;
-  transition: border-color 300ms var(--ease);
-}
-.rec-card:hover { border-color: #C8CAD0; }
-.rec-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-.rec-time {
-  font-size: 11px;
-  color: var(--text-muted);
-  letter-spacing: 0.06em;
-}
-.rec-badge {
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 2px 7px;
-  border-radius: var(--r);
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-}
-.rec-badge.jc {
-  border-color: #E8D9B8;
-  color: var(--accent);
-  background: var(--accent-light);
-}
-.rec-info {
-  font-size: 12px;
-  color: var(--text-secondary);
-  letter-spacing: 0.04em;
-  margin-bottom: 12px;
-}
-.rec-nums {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  overflow: hidden;
-}
-.rec-num {
-  background: var(--surface);
-  padding: 10px 12px;
-}
-.rec-num .rn-lbl {
-  font-size: 10px;
-  color: var(--text-muted);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
-.rec-num .rn-val {
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--text-primary);
   letter-spacing: 0.01em;
 }
-.rec-num.profit { background: var(--success-bg); }
-.rec-num.profit .rn-lbl { color: var(--success); opacity: .8; }
-.rec-num.profit .rn-val { color: var(--success); }
-.rec-num.price-col { background: var(--accent-light); }
-.rec-num.price-col .rn-lbl { color: var(--accent); opacity: .8; }
-.rec-num.price-col .rn-val { color: var(--accent); }
-.rec-margin {
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-top: 8px;
-  text-align: right;
-  letter-spacing: 0.04em;
+.mode-tab:hover { color: var(--text2); }
+.mode-tab.active {
+  background: var(--surface);
+  color: var(--text1);
+  box-shadow: var(--sh-sm);
 }
-.clear-btn {
-  width: 100%;
-  height: 36px;
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  background: transparent;
-  cursor: pointer;
-  font-size: 11px;
-  font-family: var(--font);
-  font-weight: 300;
-  color: var(--text-muted);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+.mode-tab.active.jc { color: var(--gold); }
+
+/* ── Card ── */
+.card {
+  background: var(--surface);
+  border-radius: var(--r-md);
+  box-shadow: var(--sh-sm);
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.card-head { padding: 16px 20px 0; }
+.card-label {
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 12px;
+}
+.card-body { padding: 0 20px 20px; }
+
+/* ── Fields ── */
+.grid-3 { display: grid; grid-template-columns: 2fr 2fr 1fr; gap: 8px; margin-bottom: 16px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field label {
+  font-size: 12px; font-weight: 500; color: var(--text3);
+  display: flex; align-items: center; gap: 6px;
+}
+.edit-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 1px solid var(--bg2); color: var(--text3); cursor: default;
+  transition: color 200ms, border-color 200ms; flex-shrink: 0;
+}
+.edit-badge:hover { color: var(--gold); border-color: #E8D0A0; }
+.tag {
+  font-size: 10px; padding: 2px 8px;
+  background: var(--gold-bg); color: var(--gold-dark);
+  border-radius: var(--r-pill); font-weight: 500;
+}
+
+input, select {
+  height: 48px; padding: 0 16px;
+  font-size: 16px; font-weight: 400; font-family: var(--font);
+  color: var(--text1); background: #F2F2F5;
+  border: 1.5px solid transparent;
+  border-radius: var(--r-sm); width: 100%;
+  -webkit-appearance: none; appearance: none;
+  transition: border-color 200ms var(--ease), background 200ms var(--ease);
+}
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239890C4' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; cursor: pointer;
+}
+input:focus, select:focus { outline: none; border-color: var(--indigo); background: #F8F7FF; }
+input[readonly] { color: var(--text2); cursor: default; background: #F2F2F5; }
+input[readonly]:focus { border-color: transparent; background: #F2F2F5; }
+input::placeholder { color: var(--text3); }
+
+/* ── Rate Status ── */
+.rate-status { display: flex; align-items: center; gap: 8px; margin-top: 4px; margin-bottom: 16px; min-height: 20px; }
+.dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; background: var(--text3); transition: background 400ms; }
+.dot.ok  { background: var(--green); }
+.dot.err { background: var(--red); }
+.dot.spin { background: var(--indigo); animation: blink 1.2s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1}50%{opacity:.2} }
+.rate-msg { font-size: 11px; color: var(--text3); }
+.rate-msg.ok  { color: var(--green); }
+.rate-msg.err { color: var(--red); }
+.retry-btn { font-size: 11px; color: var(--indigo); background: none; border: none; cursor: pointer; font-family: var(--font); text-decoration: underline; padding: 0; }
+
+/* ── Cost Block ── */
+.cost-block {
+  margin: 0;
+  padding: 16px 20px;
+  background: var(--surface2);
+  border-top: 1px solid rgba(40,32,100,0.06);
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+}
+.cost-label { font-size: 12px; font-weight: 500; color: var(--text3); padding-top: 4px; }
+.cost-value-wrap { text-align: right; }
+.cost-value { font-size: 24px; font-weight: 700; color: var(--text1); letter-spacing: -0.02em; }
+.cost-value.empty { font-size: 18px; font-weight: 400; color: var(--text3); }
+.cost-fee { font-size: 11px; color: var(--text3); margin-top: 4px; display: flex; flex-direction: column; gap: 2px; align-items: flex-end; }
+
+/* ── Shipping Toggle ── */
+.shipping-toggle {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 20px 0;
+  border-top: 1px solid rgba(40,32,100,0.06);
+  cursor: pointer; user-select: none;
+}
+.shipping-toggle .st-label { font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); transition: color 200ms; }
+.shipping-toggle:hover .st-label { color: var(--text2); }
+.shipping-toggle .st-chevron { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: var(--text3); transition: transform 300ms var(--ease); }
+.shipping-toggle .st-chevron svg { width: 11px; height: 11px; }
+.shipping-toggle.open .st-chevron { transform: rotate(90deg); }
+.shipping-toggle.open .st-label { color: var(--text2); }
+.shipping-panel { overflow: hidden; max-height: 0; opacity: 0; transition: max-height 350ms var(--ease), opacity 250ms var(--ease); }
+.shipping-panel.open { max-height: 320px; opacity: 1; }
+.shipping-panel-inner { padding: 16px 20px 4px; }
+
+/* ── Pound Hint ── */
+.pound-hint {
+  display: none; justify-content: space-between;
+  font-size: 12px; color: var(--text3);
+  background: var(--bg2); border-radius: var(--r-xs);
+  padding: 8px 12px; margin-bottom: 12px;
+}
+
+/* ── JC Divider Block ── */
+.jc-divider-block {
+  background: #ECEFFE;
+  border-top: 2px solid var(--indigo);
+  padding: 16px 20px 20px;
+}
+.jc-divider-label { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--indigo); opacity: .8; margin-bottom: 4px; }
+.jc-formula { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 8px 0; }
+.jc-lbl { font-size: 13px; color: var(--text2); }
+.jc-op, .jc-eq { font-size: 18px; color: var(--text3); font-weight: 300; }
+#jc_mult {
+  width: 64px; height: 44px; text-align: center;
+  font-size: 20px; font-weight: 700; color: var(--indigo-drk);
+  background: #FFFFFF; border-color: #A8B0E8;
+  border-radius: var(--r-xs);
+}
+#jc_mult:focus { border-color: var(--indigo); background: #FFFFFF; }
+.jc-price-result { margin-left: auto; text-align: right; }
+.jc-price-result .jc-currency { font-size: 12px; color: var(--text3); }
+.jc-price-result .jc-num { font-size: 28px; font-weight: 700; color: var(--text1); letter-spacing: -0.02em; }
+
+/* ── Summary Metrics ── */
+.summary-metrics {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px; margin-bottom: 12px;
+}
+.s-metric {
+  background: var(--surface); border-radius: var(--r-sm);
+  box-shadow: var(--sh-sm); padding: 14px 14px;
+}
+.s-metric.profit { background: var(--green-bg); }
+.s-metric .sm-lbl { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
+.s-metric.profit .sm-lbl { color: var(--green); opacity: .8; }
+.s-metric .sm-val { font-size: 17px; font-weight: 700; color: var(--text1); letter-spacing: -0.02em; line-height: 1.2; }
+.s-metric.profit .sm-val { color: var(--green); }
+.s-metric .sm-sub { font-size: 10px; color: var(--text3); margin-top: 3px; line-height: 1.4; }
+.s-metric.profit .sm-sub { color: var(--green); opacity: .75; }
+
+/* ── Breakdown Accordion ── */
+.breakdown-toggle {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 20px; cursor: pointer; user-select: none;
+  background: var(--surface); border-radius: var(--r-sm);
+  box-shadow: var(--sh-sm);
+  transition: background 200ms;
+}
+.breakdown-toggle:hover { background: var(--surface2); }
+.breakdown-toggle .bt-label { font-size: 14px; font-weight: 500; color: var(--text2); }
+.breakdown-toggle .bt-val { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; color: var(--text1); }
+.breakdown-toggle .bt-chevron { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; color: var(--text3); transition: transform 300ms var(--ease); }
+.breakdown-toggle .bt-chevron svg { width: 10px; height: 10px; }
+.breakdown-toggle.open .bt-chevron { transform: rotate(90deg); }
+.breakdown-panel { overflow: hidden; max-height: 0; opacity: 0; transition: max-height 350ms var(--ease), opacity 250ms var(--ease); }
+.breakdown-panel.open { max-height: 400px; opacity: 1; }
+.breakdown {
+  background: var(--surface); border-radius: 0 0 var(--r-sm) var(--r-sm);
+  padding: 0 20px; box-shadow: var(--sh-sm);
+  border-top: 1px solid rgba(40,32,100,0.06);
+}
+.b-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(40,32,100,0.06); font-size: 14px; }
+.b-row:last-child { border-bottom: none; }
+.b-row .bl { color: var(--text2); }
+.b-row .bv { font-weight: 500; color: var(--text1); }
+.b-row.b-suggest .bl { color: var(--indigo); }
+.b-row.b-suggest .bv { color: var(--indigo); font-size: 15px; }
+
+/* ── Preset Buttons ── */
+.preset-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.preset-row .lbl { font-size: 12px; color: var(--text3); white-space: nowrap; font-weight: 500; }
+.preset-btn {
+  font-size: 12px; font-weight: 500; font-family: var(--font);
+  padding: 5px 12px; border-radius: var(--r-pill);
+  border: 1.5px solid rgba(60,40,20,0.12);
+  background: transparent; color: var(--text3); cursor: pointer;
+  transition: all 200ms var(--ease);
+}
+.preset-btn:hover { border-color: var(--indigo); color: var(--indigo); background: var(--indigo-bg); }
+.preset-btn.active { border-color: var(--indigo); color: var(--indigo-drk); background: var(--indigo-bg); }
+
+/* ── Copy Button ── */
+.copy-btn {
+  width: 100%; height: 56px; margin-top: 16px;
+  background: var(--text1); color: #FFF;
+  border: none; border-radius: var(--r-pill);
+  font-size: 15px; font-weight: 700; font-family: var(--font);
+  letter-spacing: 0.04em; cursor: pointer;
+  box-shadow: var(--sh-md);
   transition: all 300ms var(--ease);
 }
-.clear-btn:hover { border-color: var(--error); color: var(--error); }
+.copy-btn:hover { background: var(--indigo); box-shadow: var(--sh-lg); transform: translateY(-1px); }
+.copy-btn:active { transform: scale(0.98); box-shadow: var(--sh-sm); }
+.copy-btn.copied { background: var(--green); }
+
+/* ── Records ── */
+#tab-records { display: none; }
+.rec-empty { padding: 48px 0; text-align: center; color: var(--text3); font-size: 14px; line-height: 2; }
+.rec-list { margin-bottom: 16px; }
+.rec-card { background: var(--surface); border-radius: var(--r-md); box-shadow: var(--sh-sm); padding: 16px; margin-bottom: 10px; }
+.rec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.rec-time { font-size: 11px; color: var(--text3); }
+.rec-badge { font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: var(--r-pill); background: var(--surface2); color: var(--text3); }
+.rec-badge.jc { background: var(--gold-bg); color: var(--gold-dark); }
+.rec-info { font-size: 12px; color: var(--text2); margin-bottom: 10px; }
+.rec-nums { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.rec-num { background: var(--surface2); border-radius: var(--r-xs); padding: 10px 10px; }
+.rec-num .rn-lbl { font-size: 9px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.rec-num .rn-val { font-size: 13px; font-weight: 700; color: var(--text1); }
+.rec-num.profit { background: var(--green-bg); }
+.rec-num.profit .rn-lbl, .rec-num.profit .rn-val { color: var(--green); }
+.rec-num.price-col { background: var(--gold-bg); }
+.rec-num.price-col .rn-lbl, .rec-num.price-col .rn-val { color: var(--gold-dark); }
+.rec-margin { font-size: 11px; color: var(--text3); margin-top: 8px; text-align: right; }
+.clear-btn { width: 100%; height: 48px; border: 1.5px solid rgba(40,32,100,0.15); border-radius: var(--r-pill); background: transparent; cursor: pointer; font-size: 13px; font-family: var(--font); font-weight: 500; color: var(--text3); transition: all 250ms; }
+.clear-btn:hover { border-color: var(--red); color: var(--red); }
+
+/* ── Footer ── */
+.site-footer { margin-top: 24px; padding-top: 16px; border-top: 1px solid rgba(40,32,100,0.08); }
+.site-footer p { font-size: 11px; color: var(--text3); line-height: 2; }
+
+/* ── Mobile ── */
+@media (max-width: 480px) {
+  .wrap { padding: 0 14px; }
+  .site-header { padding: 20px 0 20px; }
+  .card-body { padding: 0 16px 18px; }
+  .card-head { padding: 16px 16px 0; }
+  .cost-block { padding: 14px 16px; }
+  .shipping-toggle { padding: 12px 16px 0; }
+  .shipping-panel-inner { padding: 12px 16px 0; }
+  .jc-divider-block { padding: 14px 16px 16px; }
+  .breakdown-toggle { padding: 13px 16px; }
+  .breakdown { padding: 0 16px; }
+  .s-metric { padding: 12px 10px; }
+  .s-metric .sm-val { font-size: 15px; }
+  .s-metric .sm-lbl { font-size: 9px; }
+}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <!-- Header -->
-  <header class="site-header">
+<header class="site-header">
+  <div>
     <h1>代購試算</h1>
     <p>即時計算 · 一鍵複製報價</p>
-  </header>
-
-  <!-- Mode Toggle -->
-  <nav class="mode-tabs" role="tablist" aria-label="品項模式">
-    <button class="mode-tab jc active" id="btn-jc"    role="tab" aria-selected="true"  onclick="setMode('jellycat')">Jellycat</button>
-    <button class="mode-tab"           id="btn-other" role="tab" aria-selected="false" onclick="setMode('other')">其他品項</button>
-  </nav>
-
-  <!-- 商品資訊 -->
-  <div class="section-group">
-    <div class="section">
-      <div class="section-head"><div class="section-label">商品資訊</div></div>
-      <div class="section-body">
-
-        <div class="grid-3">
-          <div class="field">
-            <label>原始幣別定價</label>
-            <input type="number" id="price" min="0" step="0.01" placeholder="0" />
-          </div>
-          <div class="field">
-            <label>幣別</label>
-            <select id="currency" onchange="onCurrencyChange()">
-              <option value="GBP">英鎊 GBP</option>
-              <option value="USD">美金 USD</option>
-              <option value="JPY">日幣 JPY</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>數量</label>
-            <input type="number" id="qty" value="1" min="1" step="1" />
-          </div>
-        </div>
-
-        <div class="mt-16">
-          <div class="field">
-            <label>匯率（兌 TWD）<span class="tag">可手動修改</span></label>
-            <input type="number" id="rate" min="0" step="0.001" placeholder="讀取中…" oninput="onManualRate()" />
-          </div>
-          <div class="rate-status">
-            <div class="dot spin" id="dot"></div>
-            <span class="rate-msg" id="rate-msg">正在讀取匯率…</span>
-          </div>
-        </div>
-
-        <!-- 國際運費（收合，緊接在匯率下方） -->
-        <div class="shipping-toggle" id="shipping-toggle" onclick="toggleShipping()" role="button" aria-expanded="false" aria-controls="shipping-panel">
-          <span class="st-label">國際運費</span>
-          <span class="st-chevron">
-            <svg viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-        </div>
-        <div class="shipping-panel" id="shipping-panel" role="region">
-          <div class="shipping-panel-inner">
-            <div class="grid-2">
-              <div class="field">
-                <label>商品重量（公克）</label>
-                <input type="number" id="weight_g" placeholder="輸入後自動估算" min="0" step="1" />
-              </div>
-              <div class="field">
-                <label>每磅運費（NT$）</label>
-                <input type="number" id="rate_per_lb" value="180" min="0" step="1" />
-              </div>
-            </div>
-            <div class="pound-hint" id="pound-hint">
-              <span id="lb-display">—</span>
-              <span id="shipping-auto">自動估算：NT$ —</span>
-            </div>
-            <div class="grid-2 mt-12">
-              <div class="field">
-                <label>
-                  國際運費（TWD）
-                  <span class="edit-badge" title="可手動覆蓋自動估算值">
-                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M8.5 1.5l2 2L4 10H2v-2L8.5 1.5z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </span>
-                </label>
-                <input type="number" id="shipping" value="0" min="0" step="1" />
-              </div>
-              <div class="field">
-                <label>代購服務費（%）</label>
-                <input type="number" id="service_pct" value="0" min="0" max="100" step="0.5" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 採購成本小計（商品 + 手續費 + 國際運費） -->
-        <div class="cost-block">
-          <span class="cost-label">採購成本（商品 ＋ 運費）</span>
-          <div class="cost-value-wrap">
-            <span class="cost-value empty" id="item_cost_twd">—</span>
-            <div class="cost-fee" id="cost-fee-hint" style="display:none;"></div>
-          </div>
-        </div>
-
-        <!-- 定價區分隔（JC mode） -->
-        <div id="jc-inline" class="jc-divider-block">
-          <div class="jc-divider-label">定價</div>
-          <div class="jc-formula">
-            <span class="jc-lbl">原價</span>
-            <span class="jc-op">×</span>
-            <input type="number" id="jc_mult" value="54" min="1" step="1" oninput="calc()" />
-            <span class="jc-eq">=</span>
-            <div class="jc-price-result">
-              <span class="jc-currency">NT$</span>
-              <span class="jc-num" id="jc-price">—</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
   </div>
+</header>
 
-  <!-- 建議售價 (Other mode) -->
-  <div class="section-group" id="card-suggest" style="display:none;">
-    <div class="section">
-      <div class="section-head"><div class="section-label">建議售價</div></div>
-      <div class="section-body">
-        <div class="preset-row">
-          <span class="lbl">目標利潤率</span>
-          <button class="preset-btn" onclick="setProfit(10)">10%</button>
-          <button class="preset-btn" onclick="setProfit(15)">15%</button>
-          <button class="preset-btn active" onclick="setProfit(20)">20%</button>
-          <button class="preset-btn" onclick="setProfit(25)">25%</button>
-          <button class="preset-btn" onclick="setProfit(30)">30%</button>
+<nav class="mode-tabs" role="tablist" aria-label="品項模式">
+  <button class="mode-tab jc active" id="btn-jc"    role="tab" aria-selected="true"  onclick="setMode('jellycat')">Jellycat</button>
+  <button class="mode-tab"           id="btn-other" role="tab" aria-selected="false" onclick="setMode('other')">其他品項</button>
+</nav>
+
+<!-- 商品資訊 -->
+<div class="card">
+  <div class="card-head"><div class="card-label">商品資訊</div></div>
+  <div class="card-body">
+    <div class="grid-3">
+      <div class="field"><label>原始幣別定價</label><input type="number" id="price" min="0" step="0.01" placeholder="0" /></div>
+      <div class="field"><label>幣別</label>
+        <select id="currency" onchange="onCurrencyChange()">
+          <option value="GBP">英鎊 GBP</option>
+          <option value="USD">美金 USD</option>
+          <option value="JPY">日幣 JPY</option>
+          <option value="EUR">歐元 EUR</option>
+        </select>
+      </div>
+      <div class="field"><label>數量</label><input type="number" id="qty" value="1" min="1" step="1" /></div>
+    </div>
+    <div class="field">
+      <label>匯率（兌 TWD）<span class="tag">可手動修改</span></label>
+      <input type="number" id="rate" min="0" step="0.001" placeholder="讀取中…" oninput="onManualRate()" />
+    </div>
+    <div class="rate-status">
+      <div class="dot spin" id="dot"></div>
+      <span class="rate-msg" id="rate-msg">正在讀取匯率…</span>
+    </div>
+
+    <!-- 國際運費（收合） -->
+    <div class="shipping-toggle" id="shipping-toggle" onclick="toggleShipping()" role="button" aria-expanded="false">
+      <span class="st-label">國際運費</span>
+      <span class="st-chevron"><svg viewBox="0 0 10 10" fill="none"><path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </div>
+    <div class="shipping-panel" id="shipping-panel">
+      <div class="shipping-panel-inner">
+        <div class="grid-2">
+          <div class="field"><label>商品重量（公克）</label><input type="number" id="weight_g" placeholder="輸入後自動估算" min="0" step="1" /></div>
+          <div class="field"><label>每磅運費（NT$）</label><input type="number" id="rate_per_lb" value="180" min="0" step="1" /></div>
+        </div>
+        <div class="pound-hint" id="pound-hint">
+          <span id="lb-display">—</span>
+          <span id="shipping-auto">自動估算：NT$ —</span>
         </div>
         <div class="grid-2">
           <div class="field">
-            <label>目標利潤率（%）</label>
-            <input type="number" id="profit_pct" value="20" min="0" max="99" step="0.5" />
+            <label>國際運費（TWD）
+              <span class="edit-badge" title="可手動覆蓋自動估算值">
+                <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M8.5 1.5l2 2L4 10H2v-2L8.5 1.5z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </label>
+            <input type="number" id="shipping" value="0" min="0" step="1" />
           </div>
-          <div class="field">
-            <label>建議售價（TWD）</label>
-            <input type="number" id="suggested_price" readonly style="color:var(--text-secondary);background:var(--border-subtle);" />
-          </div>
+          <div class="field"><label>代購服務費（%）</label><input type="number" id="service_pct" value="0" min="0" max="100" step="0.5" /></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 結果 -->
-  <div class="section-group">
-    <div class="summary-metrics">
-      <div class="s-metric">
-        <div class="sm-lbl">總成本</div>
-        <div class="sm-val" id="sum-total">—</div>
-        <div class="sm-sub">商品 ＋ 運費</div>
-      </div>
-      <div class="s-metric">
-        <div class="sm-lbl">定價</div>
-        <div class="sm-val" id="sum-price">—</div>
-        <div class="sm-sub" id="sum-price-sub">—</div>
-      </div>
-      <div class="s-metric profit">
-        <div class="sm-lbl">預估利潤</div>
-        <div class="sm-val" id="sum-profit">—</div>
-        <div class="sm-sub" id="sum-sub">—</div>
-      </div>
-    </div>
-    <div class="breakdown-toggle" id="breakdown-toggle" onclick="toggleBreakdown()" role="button" aria-expanded="false" aria-controls="breakdown-panel">
-      <span class="bt-label">總成本</span>
-      <span class="bt-val">
-        <span id="b-total">—</span>
-        <span class="bt-chevron">
-          <svg viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </span>
-      </span>
-    </div>
-    <div class="breakdown-panel" id="breakdown-panel" role="region">
-      <div class="breakdown">
-        <div class="b-row"><span class="bl">商品成本</span><span class="bv" id="b-item">—</span></div>
-        <div class="b-row"><span class="bl">國際運費</span><span class="bv" id="b-ship">—</span></div>
-        <div class="b-row"><span class="bl">代購服務費</span><span class="bv" id="b-fee">—</span></div>
-        <div class="b-row b-suggest"><span class="bl">建議售價（毛利率）</span><span class="bv" id="b-suggest">—</span></div>
-      </div>
+  <!-- 採購成本小計 -->
+  <div class="cost-block">
+    <span class="cost-label">採購成本（商品 ＋ 運費）</span>
+    <div class="cost-value-wrap">
+      <span class="cost-value empty" id="item_cost_twd">—</span>
+      <div class="cost-fee" id="cost-fee-hint" style="display:none;"></div>
     </div>
   </div>
 
-  <button class="copy-btn" id="copy-btn" onclick="copyReport()">複製報價摘要</button>
-
-  <!-- ── 紀錄頁面 ── -->
-  <div id="tab-records">
-    <div class="rec-list" id="rec-list"></div>
-    <button class="clear-btn" onclick="clearRecords()">清除全部紀錄</button>
+  <!-- Jellycat 定價（GBP + JC mode） -->
+  <div id="jc-inline" class="jc-divider-block">
+    <div class="jc-divider-label">定價</div>
+    <div class="jc-formula">
+      <span class="jc-lbl">原價</span>
+      <span class="jc-op">×</span>
+      <input type="number" id="jc_mult" value="54" min="1" step="1" oninput="calc()" />
+      <span class="jc-eq">=</span>
+      <div class="jc-price-result">
+        <span class="jc-currency">NT$</span>
+        <span class="jc-num" id="jc-price">—</span>
+      </div>
+    </div>
   </div>
+</div>
 
-  <footer class="site-footer">
-    <p>匯率來源：公開市場匯率（自動帶入，可手動修改）<br>
-    商品成本含 1.5% 信用卡手續費<br>
-    建議售價 ＝ 總成本 ÷（1 − 目標利潤率）</p>
-  </footer>
+<!-- 建議售價 (Other mode) -->
+<div class="card" id="card-suggest" style="display:none;">
+  <div class="card-head"><div class="card-label">建議售價</div></div>
+  <div class="card-body">
+    <div class="preset-row">
+      <span class="lbl">目標利潤率</span>
+      <button class="preset-btn" onclick="setProfit(10)">10%</button>
+      <button class="preset-btn" onclick="setProfit(15)">15%</button>
+      <button class="preset-btn active" onclick="setProfit(20)">20%</button>
+      <button class="preset-btn" onclick="setProfit(25)">25%</button>
+      <button class="preset-btn" onclick="setProfit(30)">30%</button>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>目標利潤率（%）</label><input type="number" id="profit_pct" value="20" min="0" max="99" step="0.5" /></div>
+      <div class="field"><label>建議售價（TWD）</label><input type="number" id="suggested_price" readonly /></div>
+    </div>
+  </div>
+</div>
 
-</div><!-- /wrap -->
+<!-- 結果 -->
+<div class="summary-metrics">
+  <div class="s-metric">
+    <div class="sm-lbl">總成本</div>
+    <div class="sm-val" id="sum-total">—</div>
+    <div class="sm-sub">商品 ＋ 運費</div>
+  </div>
+  <div class="s-metric">
+    <div class="sm-lbl">定價</div>
+    <div class="sm-val" id="sum-price">—</div>
+    <div class="sm-sub" id="sum-price-sub">—</div>
+  </div>
+  <div class="s-metric profit">
+    <div class="sm-lbl">預估利潤</div>
+    <div class="sm-val" id="sum-profit">—</div>
+    <div class="sm-sub" id="sum-sub">—</div>
+  </div>
+</div>
+
+<div class="breakdown-toggle" id="breakdown-toggle" onclick="toggleBreakdown()" role="button" aria-expanded="false">
+  <span class="bt-label">成本明細</span>
+  <span class="bt-val">
+    <span id="b-total">—</span>
+    <span class="bt-chevron"><svg viewBox="0 0 10 10" fill="none"><path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  </span>
+</div>
+<div class="breakdown-panel" id="breakdown-panel">
+  <div class="breakdown">
+    <div class="b-row"><span class="bl">商品成本</span><span class="bv" id="b-item">—</span></div>
+    <div class="b-row"><span class="bl">國際運費</span><span class="bv" id="b-ship">—</span></div>
+    <div class="b-row"><span class="bl">代購服務費</span><span class="bv" id="b-fee">—</span></div>
+    <div class="b-row b-suggest"><span class="bl">建議售價（毛利率）</span><span class="bv" id="b-suggest">—</span></div>
+  </div>
+</div>
+
+<button class="copy-btn" id="copy-btn" onclick="copyReport()">複製報價摘要</button>
+
+<!-- 紀錄 -->
+<div id="tab-records">
+  <div class="rec-list" id="rec-list"></div>
+  <button class="clear-btn" onclick="clearRecords()">清除全部紀錄</button>
+</div>
+
+<footer class="site-footer">
+  <p>匯率來源：公開市場匯率（自動帶入，可手動修改）<br>
+  商品成本含 1.5% 信用卡手續費<br>
+  建議售價 ＝ 總成本 ÷（1 − 目標利潤率）</p>
+</footer>
+
+</div>
 
 <script>
 const $ = id => document.getElementById(id);
@@ -1070,14 +504,12 @@ const fmtN   = n => isNaN(n) ? '—' : Math.round(n).toLocaleString();
 let manualShipping = false;
 let manualRate     = false;
 
-/* ── 匯率狀態 ─────────────────────────────────── */
 function setStatus(state, html) {
   $('dot').className = 'dot ' + state;
   $('rate-msg').className = 'rate-msg ' + state;
   $('rate-msg').innerHTML = html;
 }
 
-/* ── 匯率 API：jsDelivr CDN ──────────────────── */
 async function fetchRate(currency) {
   const code = currency.toLowerCase();
   const url  = `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${code}.json`;
@@ -1092,8 +524,7 @@ async function fetchRate(currency) {
 async function loadRate(currency) {
   if (manualRate) return;
   setStatus('spin', '正在讀取匯率…');
-  $('rate').value       = '';
-  $('rate').placeholder = '讀取中…';
+  $('rate').value = ''; $('rate').placeholder = '讀取中…';
   try {
     const { rate, date } = await fetchRate(currency);
     $('rate').value = rate % 1 === 0 ? rate : parseFloat(rate.toFixed(4));
@@ -1106,26 +537,14 @@ async function loadRate(currency) {
   }
 }
 
-function retryRate()       { manualRate = false; loadRate($('currency').value); }
-function onCurrencyChange(){
-  manualRate = false;
-  loadRate($('currency').value);
-  updateJcVisibility();
-}
-function onManualRate()    {
-  manualRate = true;
-  $('dot').className  = 'dot';
-  $('rate-msg').className = 'rate-msg';
-  $('rate-msg').textContent = '手動輸入';
-  calc();
-}
+function retryRate()        { manualRate = false; loadRate($('currency').value); }
+function onCurrencyChange() { manualRate = false; loadRate($('currency').value); updateJcVisibility(); }
+function onManualRate()     { manualRate = true; $('dot').className = 'dot'; $('rate-msg').className = 'rate-msg'; $('rate-msg').textContent = '手動輸入'; calc(); }
 
-/* ── Jellycat 區塊只在英鎊時顯示 ─────────────── */
 function updateJcVisibility() {
   const isGBP = $('currency').value === 'GBP';
   const isJCMode = $('btn-jc').classList.contains('active');
   $('jc-inline').style.display = (isGBP && isJCMode) ? '' : 'none';
-  /* 若切換到非 GBP，自動切到「其他品項」模式，避免結果卡邏輯錯誤 */
   if (!isGBP && isJCMode) {
     $('btn-jc').classList.remove('active', 'jc');
     $('btn-other').classList.add('active');
@@ -1136,287 +555,185 @@ function updateJcVisibility() {
   calc();
 }
 
-/* ── 明細展開收合 ─────────────────────────────── */
 function toggleBreakdown() {
-  const toggle = $('breakdown-toggle');
-  const panel  = $('breakdown-panel');
-  const isOpen = toggle.classList.contains('open');
-  toggle.classList.toggle('open', !isOpen);
-  panel.classList.toggle('open', !isOpen);
-  toggle.setAttribute('aria-expanded', !isOpen);
+  const t = $('breakdown-toggle'), p = $('breakdown-panel');
+  const o = t.classList.contains('open');
+  t.classList.toggle('open', !o); p.classList.toggle('open', !o);
+  t.setAttribute('aria-expanded', !o);
 }
 
-/* ── 國際運費展開收合 ─────────────────────────── */
 function toggleShipping() {
-  const toggle = $('shipping-toggle');
-  const panel  = $('shipping-panel');
-  const isOpen = toggle.classList.contains('open');
-  toggle.classList.toggle('open', !isOpen);
-  panel.classList.toggle('open', !isOpen);
-  toggle.setAttribute('aria-expanded', !isOpen);
+  const t = $('shipping-toggle'), p = $('shipping-panel');
+  const o = t.classList.contains('open');
+  t.classList.toggle('open', !o); p.classList.toggle('open', !o);
+  t.setAttribute('aria-expanded', !o);
 }
 
-/* ── 頁籤切換 ─────────────────────────────────── */
 function setPageTab(tab) {
   const isCalc = tab === 'calc';
-  $('ptab-calc').classList.toggle('active', isCalc);
-  $('ptab-calc').setAttribute('aria-selected', isCalc);
-  $('ptab-records').classList.toggle('active', !isCalc);
-  $('ptab-records').setAttribute('aria-selected', !isCalc);
-  $('tab-calc').style.display    = isCalc ? '' : 'none';
-  $('tab-records').style.display = isCalc ? 'none' : '';
+  ['ptab-calc','ptab-records'].forEach((id,i) => {
+    const el = $(id); if (!el) return;
+    el.classList.toggle('active', i===0 ? isCalc : !isCalc);
+    el.setAttribute('aria-selected', i===0 ? isCalc : !isCalc);
+  });
+  const tc = $('tab-calc'), tr = $('tab-records');
+  if (tc) tc.style.display = isCalc ? '' : 'none';
+  if (tr) tr.style.display = isCalc ? 'none' : '';
   if (!isCalc) renderRecords();
 }
 
-/* ── 紀錄儲存 ─────────────────────────────────── */
-const REC_KEY = 'daigou-records';
-const MAX_REC = 20;
-
-function saveRecord(data) {
-  let recs = loadRecords();
-  recs.unshift(data);
-  if (recs.length > MAX_REC) recs = recs.slice(0, MAX_REC);
-  try { localStorage.setItem(REC_KEY, JSON.stringify(recs)); } catch {}
-}
-
-function loadRecords() {
-  try { return JSON.parse(localStorage.getItem(REC_KEY) || '[]'); } catch { return []; }
-}
-
-function clearRecords() {
-  if (!confirm('確定要清除全部紀錄嗎？')) return;
-  try { localStorage.removeItem(REC_KEY); } catch {}
-  renderRecords();
-}
-
+const REC_KEY = 'daigou-records', MAX_REC = 20;
+function saveRecord(data) { let r = loadRecords(); r.unshift(data); if (r.length > MAX_REC) r = r.slice(0, MAX_REC); try { localStorage.setItem(REC_KEY, JSON.stringify(r)); } catch {} }
+function loadRecords()    { try { return JSON.parse(localStorage.getItem(REC_KEY) || '[]'); } catch { return []; } }
+function clearRecords()   { if (!confirm('確定要清除全部紀錄嗎？')) return; try { localStorage.removeItem(REC_KEY); } catch {} renderRecords(); }
 function renderRecords() {
-  const list = $('rec-list');
-  const recs = loadRecords();
-  if (!recs.length) {
-    list.innerHTML = '<div class="rec-empty">尚無計算紀錄<br>每次複製報價時會自動儲存</div>';
-    return;
-  }
-  const lblMap = { GBP:'英鎊', USD:'美金', JPY:'日幣' };
+  const list = $('rec-list'), recs = loadRecords();
+  const lblMap = { GBP:'英鎊', USD:'美金', JPY:'日幣', EUR:'歐元' };
+  if (!recs.length) { list.innerHTML = '<div class="rec-empty">尚無計算紀錄<br>每次複製報價時會自動儲存</div>'; return; }
   list.innerHTML = recs.map(r => {
-    const modeLabel = r.mode === 'jellycat' ? 'Jellycat' : '其他品項';
     const isJC = r.mode === 'jellycat';
-    const sellLabel = isJC ? `×${r.jcMult} 售價` : '建議售價';
-    return `
-    <div class="rec-card">
-      <div class="rec-head">
-        <span class="rec-time">${r.ts}</span>
-        <span class="rec-badge${isJC ? ' jc' : ''}">${modeLabel}</span>
-      </div>
-      <div class="rec-info">
-        ${lblMap[r.cur] || r.cur} ${r.price} × ${r.qty} 件　匯率 ${r.rate}
-      </div>
+    return `<div class="rec-card">
+      <div class="rec-head"><span class="rec-time">${r.ts}</span><span class="rec-badge${isJC?' jc':''}">${isJC?'Jellycat':'其他品項'}</span></div>
+      <div class="rec-info">${lblMap[r.cur]||r.cur} ${r.price} × ${r.qty} 件　匯率 ${r.rate}</div>
       <div class="rec-nums">
-        <div class="rec-num">
-          <div class="rn-lbl">總成本</div>
-          <div class="rn-val">NT$ ${Number(r.total).toLocaleString()}</div>
-        </div>
-        <div class="rec-num price-col">
-          <div class="rn-lbl">${sellLabel}</div>
-          <div class="rn-val">NT$ ${Number(r.sellPrice).toLocaleString()}</div>
-        </div>
-        <div class="rec-num profit">
-          <div class="rn-lbl">利潤</div>
-          <div class="rn-val">NT$ ${Number(r.profit).toLocaleString()}</div>
-        </div>
+        <div class="rec-num"><div class="rn-lbl">總成本</div><div class="rn-val">NT$ ${Number(r.total).toLocaleString()}</div></div>
+        <div class="rec-num price-col"><div class="rn-lbl">${isJC?`×${r.jcMult} 售價`:'建議售價'}</div><div class="rn-val">NT$ ${Number(r.sellPrice).toLocaleString()}</div></div>
+        <div class="rec-num profit"><div class="rn-lbl">利潤</div><div class="rn-val">NT$ ${Number(r.profit).toLocaleString()}</div></div>
       </div>
       <div class="rec-margin">毛利率 ${r.margin}%</div>
     </div>`;
   }).join('');
 }
 
-/* ── 模式切換 ─────────────────────────────────── */
 function setMode(mode) {
   const isJC = mode === 'jellycat';
-  $('btn-jc').classList.toggle('active', isJC);
-  $('btn-jc').classList.toggle('jc', isJC);
-  $('btn-jc').setAttribute('aria-selected', isJC);
-  $('btn-other').classList.toggle('active', !isJC);
-  $('btn-other').setAttribute('aria-selected', !isJC);
-
+  $('btn-jc').classList.toggle('active', isJC); $('btn-jc').classList.toggle('jc', isJC); $('btn-jc').setAttribute('aria-selected', isJC);
+  $('btn-other').classList.toggle('active', !isJC); $('btn-other').setAttribute('aria-selected', !isJC);
   const isGBP = $('currency').value === 'GBP';
   $('jc-inline').style.display    = (isJC && isGBP) ? '' : 'none';
   $('card-suggest').style.display = isJC ? 'none' : '';
-
   const sugRow = $('b-suggest')?.closest('.b-row');
   if (sugRow) sugRow.style.display = isJC ? 'none' : '';
   calc();
 }
 
-/* ── 建議售價預設 ─────────────────────────────── */
 function setProfit(val) {
   $('profit_pct').value = val;
-  document.querySelectorAll('.preset-btn').forEach(b =>
-    b.classList.toggle('active', parseInt(b.textContent) === val));
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.toggle('active', parseInt(b.textContent) === val));
   calc();
 }
 
-/* ── 計算 ─────────────────────────────────────── */
 function calc() {
-  const price     = parseFloat($('price').value)      || 0;
-  const qty       = parseInt($('qty').value)           || 1;
-  const rate      = parseFloat($('rate').value)        || 0;
-  const svcPct    = parseFloat($('service_pct').value) || 0;
-  const profitPct = parseFloat($('profit_pct').value)  || 0;
-  const weightG   = parseFloat($('weight_g').value);
-  const ratePerLb = parseFloat($('rate_per_lb').value) || 180;
+  const price = parseFloat($('price').value)||0, qty = parseInt($('qty').value)||1;
+  const rate = parseFloat($('rate').value)||0, svcPct = parseFloat($('service_pct').value)||0;
+  const profitPct = parseFloat($('profit_pct').value)||0, weightG = parseFloat($('weight_g').value);
+  const ratePerLb = parseFloat($('rate_per_lb').value)||180;
 
-  /* 商品成本 ＋ 1.5% 手續費 */
-  const baseTWD = price * qty * rate;
-  const feeAmt  = baseTWD * 0.015;
-  const itemTWD = baseTWD + feeAmt;
+  const baseTWD = price*qty*rate, feeAmt = baseTWD*0.015, itemTWD = baseTWD+feeAmt;
 
-  /* 重量換算（先算運費，才能在 cost block 顯示） */
   if (!isNaN(weightG) && weightG > 0) {
-    const lbs  = weightG / 453.592;
-    const auto = Math.ceil(lbs * 10) / 10 * ratePerLb;
-    $('pound-hint').style.display  = 'flex';
-    $('lb-display').textContent    = lbs.toFixed(2) + ' 磅';
-    $('shipping-auto').textContent = '自動估算：NT$ ' + Math.round(auto).toLocaleString();
+    const lbs = weightG/453.592, auto = Math.ceil(lbs*10)/10*ratePerLb;
+    $('pound-hint').style.display = 'flex';
+    $('lb-display').textContent = lbs.toFixed(2)+' 磅';
+    $('shipping-auto').textContent = '自動估算：NT$ '+Math.round(auto).toLocaleString();
     if (!manualShipping) $('shipping').value = Math.round(auto);
-  } else {
-    $('pound-hint').style.display = 'none';
-  }
+  } else { $('pound-hint').style.display = 'none'; }
 
-  const ship      = parseFloat($('shipping').value) || 0;
-  const svcFee    = Math.round(itemTWD * svcPct / 100);
-  const totalCost = Math.round(itemTWD + ship + svcFee);
+  const ship = parseFloat($('shipping').value)||0;
+  const svcFee = Math.round(itemTWD*svcPct/100);
+  const totalCost = Math.round(itemTWD+ship+svcFee);
 
-  const costEl = $('item_cost_twd');
-  const feeEl  = $('cost-fee-hint');
+  const costEl = $('item_cost_twd'), feeEl = $('cost-fee-hint');
   if (rate > 0 && itemTWD > 0) {
-    costEl.textContent = 'NT$ ' + totalCost.toLocaleString();
-    costEl.classList.remove('empty');
+    costEl.textContent = 'NT$ '+totalCost.toLocaleString(); costEl.classList.remove('empty');
     let lines = `<span>商品 NT$ ${Math.round(itemTWD).toLocaleString()}（含手續費 ${Math.round(feeAmt).toLocaleString()}）</span>`;
-    if (ship > 0)   lines += `<span>運費 NT$ ${ship.toLocaleString()}</span>`;
+    if (ship > 0) lines += `<span>運費 NT$ ${ship.toLocaleString()}</span>`;
     if (svcFee > 0) lines += `<span>服務費 NT$ ${svcFee.toLocaleString()}</span>`;
-    feeEl.innerHTML     = lines;
-    feeEl.style.display = '';
-  } else {
-    costEl.textContent = '—';
-    costEl.classList.add('empty');
-    feeEl.style.display = 'none';
-  }
-  const total  = totalCost;
-  const suggest = profitPct < 100 ? Math.round(total / (1 - profitPct / 100)) : NaN;
-  const profit  = isNaN(suggest) ? NaN : suggest - total;
+    feeEl.innerHTML = lines; feeEl.style.display = '';
+  } else { costEl.textContent = '—'; costEl.classList.add('empty'); feeEl.style.display = 'none'; }
 
-  $('suggested_price').value  = isNaN(suggest) ? '' : suggest;
-  $('sum-total').textContent  = fmtTWD(total);
-  $('b-item').textContent     = fmtN(itemTWD);
-  $('b-ship').textContent     = fmtN(ship);
-  $('b-fee').textContent      = fmtN(svcFee);
-  $('b-total').textContent    = fmtN(total);
-  $('b-suggest').textContent  = isNaN(suggest) ? '—' : 'NT$ ' + suggest.toLocaleString();
+  const total = totalCost;
+  const suggest = profitPct < 100 ? Math.round(total/(1-profitPct/100)) : NaN;
+  const profit  = isNaN(suggest) ? NaN : suggest-total;
 
-  /* Jellycat ×54 */
-  const jcMult   = parseFloat($('jc_mult').value) || 54;
-  const jcPrice  = Math.round(price * jcMult);
-  const jcTotal  = jcPrice * qty;
-  const jcProfit = total > 0 ? jcTotal - total : NaN;
-  const jcMargin = (!isNaN(jcProfit) && jcTotal > 0)
-    ? (jcProfit / jcTotal * 100).toFixed(1) : '—';
+  $('suggested_price').value = isNaN(suggest)?'':suggest;
+  $('sum-total').textContent = fmtTWD(total);
+  $('b-item').textContent = fmtN(itemTWD); $('b-ship').textContent = fmtN(ship);
+  $('b-fee').textContent = fmtN(svcFee); $('b-total').textContent = fmtN(total);
+  $('b-suggest').textContent = isNaN(suggest)?'—':'NT$ '+suggest.toLocaleString();
 
+  const jcMult = parseFloat($('jc_mult').value)||54;
+  const jcPrice = Math.round(price*jcMult), jcTotal = jcPrice*qty;
+  const jcProfit = total > 0 ? jcTotal-total : NaN;
+  const jcMargin = (!isNaN(jcProfit)&&jcTotal>0) ? (jcProfit/jcTotal*100).toFixed(1) : '—';
   $('jc-price').textContent = jcPrice > 0 ? jcPrice.toLocaleString() : '—';
 
-  /* 結果卡依模式填入「定價」和「預估利潤」 */
   const isJC = $('jc-inline').style.display !== 'none' && $('currency').value === 'GBP';
   if (isJC) {
-    $('sum-price').textContent     = fmtTWD(jcTotal);
-    $('sum-price-sub').textContent = `原價 × ${jcMult}`;
-    $('sum-profit').textContent    = fmtTWD(jcProfit);
-    $('sum-sub').textContent       = jcMargin !== '—' ? `毛利率 ${jcMargin}%` : '—';
+    $('sum-price').textContent = fmtTWD(jcTotal); $('sum-price-sub').textContent = `原價 × ${jcMult}`;
+    $('sum-profit').textContent = fmtTWD(jcProfit); $('sum-sub').textContent = jcMargin!=='—'?`毛利率 ${jcMargin}%`:'—';
   } else {
-    $('sum-price').textContent     = isNaN(suggest) ? '—' : fmtTWD(suggest);
-    $('sum-price-sub').textContent = `毛利率 ${profitPct}%`;
-    const profit = isNaN(suggest) ? NaN : suggest - total;
-    $('sum-profit').textContent    = fmtTWD(profit);
-    $('sum-sub').textContent       = !isNaN(suggest)
-      ? `售價 ${suggest.toLocaleString()} − 成本 ${total.toLocaleString()}` : '—';
+    $('sum-price').textContent = isNaN(suggest)?'—':fmtTWD(suggest); $('sum-price-sub').textContent = `毛利率 ${profitPct}%`;
+    $('sum-profit').textContent = fmtTWD(profit);
+    $('sum-sub').textContent = !isNaN(suggest)?`售價 ${suggest.toLocaleString()} − 成本 ${total.toLocaleString()}`:'—';
   }
-
   const av = parseInt($('profit_pct').value);
-  document.querySelectorAll('.preset-btn').forEach(b =>
-    b.classList.toggle('active', parseInt(b.textContent) === av));
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.toggle('active', parseInt(b.textContent)===av));
 }
 
-/* ── 複製 ─────────────────────────────────────── */
 function copyReport() {
-  const itemCostText = $('item_cost_twd').textContent.replace(/[^0-9]/g, '');
-  const cur  = $('currency').value;
-  const lbl  = { GBP:'英鎊', USD:'美金', JPY:'日幣' }[cur] || cur;
+  const itemCostText = $('item_cost_twd').textContent.replace(/[^0-9]/g,'');
+  const cur = $('currency').value;
+  const lbl = {GBP:'英鎊',USD:'美金',JPY:'日幣',EUR:'歐元'}[cur]||cur;
   const isJC = $('jc-inline').style.display !== 'none';
-  const jcMult = parseFloat($('jc_mult').value) || 54;
-  const jcMarginPct = $('sum-sub').textContent;
-  const text =
-`【代購報價】
-商品原價：${$('price').value} ${lbl}（${cur}）× ${$('qty').value} 件
-匯率：${$('rate').value}（TWD）
-商品成本：NT$ ${Number(itemCostText).toLocaleString()}（含 1.5% 手續費）
-國際運費：NT$ ${Number($('shipping').value||0).toLocaleString()}
-代購服務費（${$('service_pct').value}%）：${$('b-fee').textContent}
-────────────
-總成本：NT$ ${$('b-total').textContent}
-${isJC
-  ? `Jellycat ×${jcMult} 售價：NT$ ${$('jc-price').textContent}　${jcMarginPct}`
-  : `建議售價（毛利率 ${$('profit_pct').value}%）：NT$ ${Number($('suggested_price').value||0).toLocaleString()}`
-}`;
+  const jcMult = parseFloat($('jc_mult').value)||54;
+  const shipVal = Number($('shipping').value||0), svcPctVal = parseFloat($('service_pct').value)||0;
+
+  const text = [
+    '【代購報價】',
+    `商品原價：${$('price').value} ${lbl}（${cur}）× ${$('qty').value} 件`,
+    `匯率：${$('rate').value}（TWD）`,
+    `商品成本：NT$ ${Number(itemCostText).toLocaleString()}（含 1.5% 手續費）`,
+    shipVal > 0 ? `國際運費：NT$ ${shipVal.toLocaleString()}` : null,
+    svcPctVal > 0 ? `代購服務費（${$('service_pct').value}%）：${$('b-fee').textContent}` : null,
+    '────────────',
+    `總成本：NT$ ${$('b-total').textContent}`,
+    isJC
+      ? `Jellycat ×${jcMult} 售價：NT$ ${$('jc-price').textContent}　${$('sum-sub').textContent}`
+      : `建議售價（毛利率 ${$('profit_pct').value}%）：NT$ ${Number($('suggested_price').value||0).toLocaleString()}`,
+    `預估利潤：${$('sum-profit').textContent}`
+  ].filter(l => l !== null).join('\n');
 
   const onSuccess = () => {
-    /* 儲存紀錄 */
-    const jcPrc = Math.round(parseFloat($('price').value||0) * jcMult);
-    const total = parseInt($('b-total').textContent.replace(/\D/g,'')) || 0;
-    const sell  = isJC ? jcPrc * (parseInt($('qty').value)||1)
-                       : parseInt($('suggested_price').value||0);
-    const prft  = sell - total;
-    const mrgn  = sell > 0 ? (prft / sell * 100).toFixed(1) : '0';
-    const now   = new Date();
-    const ts    = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}  ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-    saveRecord({ ts, mode: isJC ? 'jellycat' : 'other',
-      cur, price: $('price').value, qty: $('qty').value,
-      rate: $('rate').value, jcMult,
-      total, sellPrice: sell, profit: prft, margin: mrgn });
-    /* 按鈕回饋 */
+    const jcPrc = Math.round(parseFloat($('price').value||0)*jcMult);
+    const total = parseInt($('b-total').textContent.replace(/\D/g,''))||0;
+    const sell  = isJC ? jcPrc*(parseInt($('qty').value)||1) : parseInt($('suggested_price').value||0);
+    const prft  = sell-total, mrgn = sell>0?(prft/sell*100).toFixed(1):'0';
+    const now = new Date();
+    const ts = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}  ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+    saveRecord({ ts, mode:isJC?'jellycat':'other', cur, price:$('price').value, qty:$('qty').value, rate:$('rate').value, jcMult, total, sellPrice:sell, profit:prft, margin:mrgn });
     const btn = $('copy-btn');
-    btn.textContent = '已複製';
-    btn.classList.add('copied');
+    btn.textContent = '已複製 ✓'; btn.classList.add('copied');
     setTimeout(() => { btn.textContent = '複製報價摘要'; btn.classList.remove('copied'); }, 2500);
   };
 
-  /* 嘗試新版 Clipboard API，失敗則用 execCommand 備援 */
   if (navigator.clipboard && window.isSecureContext) {
     navigator.clipboard.writeText(text).then(onSuccess).catch(() => legacyCopy(text, onSuccess));
-  } else {
-    legacyCopy(text, onSuccess);
-  }
+  } else { legacyCopy(text, onSuccess); }
 }
 
 function legacyCopy(text, onSuccess) {
   const ta = document.createElement('textarea');
-  ta.value = text;
-  ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none;';
-  document.body.appendChild(ta);
-  ta.focus(); ta.select();
-  try {
-    document.execCommand('copy');
-    onSuccess();
-  } catch {
-    alert(text);
-  }
+  ta.value = text; ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none;';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try { document.execCommand('copy'); onSuccess(); } catch { alert(text); }
   document.body.removeChild(ta);
 }
 
-/* ── 事件 ─────────────────────────────────────── */
-$('shipping').addEventListener('input',   () => { manualShipping = true;  calc(); });
-$('weight_g').addEventListener('input',   () => { manualShipping = false; calc(); });
-['price','qty','rate_per_lb','service_pct','profit_pct'].forEach(id =>
-  $(id).addEventListener('input', calc));
+$('shipping').addEventListener('input', () => { manualShipping = true; calc(); });
+$('weight_g').addEventListener('input', () => { manualShipping = false; calc(); });
+['price','qty','rate_per_lb','service_pct','profit_pct'].forEach(id => $(id).addEventListener('input', calc));
 
-/* ── 啟動 ─────────────────────────────────────── */
 setMode('jellycat');
 loadRate('GBP');
 updateJcVisibility();
