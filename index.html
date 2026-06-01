@@ -800,7 +800,7 @@ function calc() {
 }
 
 function copyReport() {
-  const itemCostText = $('item_cost_twd').textContent.replace(/[^0-9]/g,'');
+  const itemCostText = $('callout-item').textContent.replace(/[^0-9]/g,'');
   const cur = $('currency').value;
   const isJC = $('jc-inline').style.display !== 'none';
   const jcMult = parseFloat($('jc_mult').value)||54;
