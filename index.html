@@ -4,35 +4,28 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>代購試算</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
 <style>
+/* ── Notion Tokens ── */
 :root {
   --bg:        #FFFFFF;
-  --bg2:       #EEECFA;
   --surface:   #FFFFFF;
-  --surface2:  #F6F5FF;
-  --text1:     #201B5C;
-  --text2:     #5850A0;
-  --text3:     #9890C4;
-  --gold:      #C09040;
-  --gold-bg:   #FDF6E8;
-  --gold-dark: #8A6420;
-  --indigo:    #4A50D0;
-  --indigo-bg: #ECEFFE;
-  --indigo-drk:#2830A8;
-  --green:     #2A7A4A;
-  --green-bg:  #E8F5EE;
-  --red:       #C03030;
-  --r-xs: 8px;
-  --r-sm: 12px;
-  --r-md: 20px;
-  --r-lg: 24px;
-  --r-pill: 100px;
-  --sh-sm: 0 2px 12px rgba(40,32,100,0.08);
-  --sh-md: 0 4px 20px rgba(40,32,100,0.10);
-  --sh-lg: 0 8px 32px rgba(40,32,100,0.13);
-  --font: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'PingFang TC', sans-serif;
+  --hover:     #F1F1EF;
+  --selected:  rgba(35,131,226,0.08);
+  --text1:     #37352F;
+  --text2:     #6F6E69;
+  --text3:     #9B9A97;
+  --border:    rgba(55,53,47,0.09);
+  --border-md: rgba(55,53,47,0.16);
+  --blue:      #2383E2;
+  --blue-bg:   rgba(35,131,226,0.08);
+  --blue-drk:  #1A6ABF;
+  --green:     #0F7B6C;
+  --green-bg:  rgba(15,123,108,0.08);
+  --orange:    #D9730D;
+  --orange-bg: rgba(217,115,13,0.08);
+  --red:       #E03E3E;
+  --r: 3px;
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
   --ease: cubic-bezier(0.4,0,0.2,1);
 }
 
@@ -43,291 +36,310 @@ body {
   font-family: var(--font);
   background: var(--bg);
   color: var(--text1);
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.6;
   min-height: 100vh;
-  padding: 0 0 96px;
+  padding: 0 0 80px;
 }
 
-.wrap { max-width: 540px; margin: 0 auto; padding: 0 16px; }
+.wrap { max-width: 600px; margin: 0 auto; padding: 0 24px; }
 
-/* ── Header ── */
-.site-header {
-  padding: 32px 0 24px;
-  display: flex; align-items: center; justify-content: space-between;
+/* ── Page Header ── */
+.site-header { padding: 40px 0 8px; }
+.site-header h1 {
+  font-size: 28px; font-weight: 700; color: var(--text1);
+  letter-spacing: -0.03em; line-height: 1.2;
 }
-.site-header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: var(--text1); }
-.site-header p  { font-size: 12px; color: var(--text3); margin-top: 4px; }
+.site-header p { font-size: 13px; color: var(--text3); margin-top: 4px; }
 
-/* ── Mode Toggle ── */
+/* ── Mode Tabs — Notion database view style ── */
 .mode-tabs {
-  display: flex;
-  background: var(--bg2);
-  border-radius: var(--r-pill);
-  padding: 4px;
-  gap: 4px;
-  margin-bottom: 20px;
-  box-shadow: inset 0 1px 4px rgba(40,32,100,0.10);
+  display: flex; gap: 0;
+  border-bottom: 1px solid var(--border);
+  margin: 24px 0 32px;
 }
 .mode-tab {
-  flex: 1; height: 40px;
-  border-radius: var(--r-pill);
-  font-size: 14px; font-weight: 500;
+  padding: 8px 16px;
+  font-size: 14px; font-weight: 400;
   font-family: var(--font);
   color: var(--text3);
-  background: transparent; border: none;
+  background: none; border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
   cursor: pointer;
-  transition: all 250ms var(--ease);
-  letter-spacing: 0.01em;
+  transition: all 200ms var(--ease);
 }
-.mode-tab:hover { color: var(--text2); }
-.mode-tab.active {
-  background: var(--surface);
-  color: var(--text1);
-  box-shadow: var(--sh-sm);
-}
-.mode-tab.active.jc { color: var(--gold); }
+.mode-tab:hover { color: var(--text1); background: var(--hover); border-radius: var(--r) var(--r) 0 0; }
+.mode-tab.active { color: var(--text1); font-weight: 500; border-bottom-color: var(--text1); }
+.mode-tab.active.jc { color: var(--orange); border-bottom-color: var(--orange); }
 
-/* ── Card ── */
-.card {
-  background: var(--surface);
-  border-radius: var(--r-md);
-  box-shadow: var(--sh-sm);
-  margin-bottom: 12px;
-  overflow: hidden;
+/* ── Section ── */
+.section { margin-bottom: 4px; }
+.section-title {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text3); padding: 16px 0 8px;
 }
-.card-head { padding: 16px 20px 0; }
-.card-label {
-  font-size: 11px; font-weight: 500;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--text3); margin-bottom: 12px;
-}
-.card-body { padding: 0 20px 20px; }
 
-/* ── Fields ── */
-.grid-3 { display: grid; grid-template-columns: 2fr 2fr 1fr; gap: 8px; margin-bottom: 16px; }
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
-.field { display: flex; flex-direction: column; gap: 8px; }
-.field label {
-  font-size: 12px; font-weight: 500; color: var(--text3);
+/* ── Property Rows (Notion database feel) ── */
+.prop-row {
+  display: flex; align-items: center; min-height: 36px;
+  border-radius: var(--r);
+  transition: background 100ms;
+}
+.prop-row:hover { background: var(--hover); }
+.prop-label {
+  width: 140px; min-width: 140px;
+  font-size: 13px; color: var(--text3);
   display: flex; align-items: center; gap: 6px;
+  padding: 0 8px; flex-shrink: 0;
 }
-.edit-badge {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 16px; height: 16px; border-radius: 50%;
-  border: 1px solid var(--bg2); color: var(--text3); cursor: default;
-  transition: color 200ms, border-color 200ms; flex-shrink: 0;
-}
-.edit-badge:hover { color: var(--gold); border-color: #E8D0A0; }
-.tag {
-  font-size: 10px; padding: 2px 8px;
-  background: var(--gold-bg); color: var(--gold-dark);
-  border-radius: var(--r-pill); font-weight: 500;
+.prop-label svg { width: 14px; height: 14px; opacity: 0.5; }
+.prop-value { flex: 1; padding: 0 4px; }
+
+/* ── Grid for 3-col ── */
+.grid-3 { display: grid; grid-template-columns: 2fr 2fr 1fr; gap: 8px; margin-bottom: 4px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 4px; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field > .f-label {
+  font-size: 12px; color: var(--text3);
+  padding: 2px 0; display: flex; align-items: center; gap: 6px;
 }
 
+/* ── Inputs ── */
 input, select {
-  height: 48px; padding: 0 16px;
-  font-size: 16px; font-weight: 400; font-family: var(--font);
-  color: var(--text1); background: #F2F2F5;
-  border: 1.5px solid transparent;
-  border-radius: var(--r-sm); width: 100%;
+  height: 36px; padding: 0 10px;
+  font-size: 15px; font-family: var(--font);
+  color: var(--text1); background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--r); width: 100%;
   -webkit-appearance: none; appearance: none;
-  transition: border-color 200ms var(--ease), background 200ms var(--ease);
+  transition: border-color 150ms, background 150ms;
 }
 select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239890C4' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239B9A97' stroke-width='1.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center;
+  padding-right: 28px; cursor: pointer;
 }
-input:focus, select:focus { outline: none; border-color: var(--indigo); background: #F8F7FF; }
-input[readonly] { color: var(--text2); cursor: default; background: #F2F2F5; }
-input[readonly]:focus { border-color: transparent; background: #F2F2F5; }
-input::placeholder { color: var(--text3); }
+input:hover, select:hover { border-color: var(--border-md); }
+input:focus, select:focus { outline: none; border-color: var(--blue); background: #FAFCFF; }
+input[readonly] { color: var(--text2); cursor: default; background: transparent; }
+input[readonly]:focus { border-color: var(--border); background: transparent; }
+input::placeholder { color: var(--text3); font-size: 14px; }
+
+/* ── Tag / Badge ── */
+.tag {
+  font-size: 11px; padding: 1px 7px;
+  background: var(--hover); color: var(--text2);
+  border-radius: 3px; font-weight: 400;
+  border: 1px solid var(--border);
+}
+.edit-icon { color: var(--text3); opacity: 0.6; cursor: default; flex-shrink: 0; }
+
+/* ── Rate Shortcut ── */
+.rate-input-row { display: flex; gap: 8px; align-items: center; }
+.rate-input-row input { flex: 1; }
+.rate-shortcut {
+  height: 36px; padding: 0 14px;
+  background: var(--blue-bg); color: var(--blue-drk);
+  border: 1px solid var(--blue);
+  border-radius: var(--r);
+  font-size: 14px; font-weight: 600; font-family: var(--font);
+  cursor: pointer; white-space: nowrap; flex-shrink: 0;
+  transition: all 150ms;
+}
+.rate-shortcut:hover { background: var(--blue); color: #fff; }
 
 /* ── Rate Status ── */
-.rate-status { display: flex; align-items: center; gap: 8px; margin-top: 4px; margin-bottom: 16px; min-height: 20px; }
+.rate-status {
+  display: flex; align-items: center; gap: 6px;
+  margin: 4px 0 8px; min-height: 18px;
+}
 .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; background: var(--text3); transition: background 400ms; }
-.dot.ok  { background: var(--green); }
-.dot.err { background: var(--red); }
-.dot.spin { background: var(--indigo); animation: blink 1.2s ease-in-out infinite; }
+.dot.ok   { background: var(--green); }
+.dot.err  { background: var(--red); }
+.dot.spin { background: var(--blue); animation: blink 1.2s ease-in-out infinite; }
 @keyframes blink { 0%,100%{opacity:1}50%{opacity:.2} }
-.rate-msg { font-size: 11px; color: var(--text3); }
+.rate-msg { font-size: 12px; color: var(--text3); }
 .rate-msg.ok  { color: var(--green); }
 .rate-msg.err { color: var(--red); }
-.retry-btn { font-size: 11px; color: var(--indigo); background: none; border: none; cursor: pointer; font-family: var(--font); text-decoration: underline; padding: 0; }
+.retry-btn { font-size: 12px; color: var(--blue); background: none; border: none; cursor: pointer; font-family: var(--font); text-decoration: underline; padding: 0; }
 
-/* ── Cost Block ── */
-.cost-block {
-  margin: 0;
-  padding: 16px 20px;
-  background: var(--surface2);
-  border-top: 1px solid rgba(40,32,100,0.06);
-  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
-}
-.cost-label { font-size: 12px; font-weight: 500; color: var(--text3); padding-top: 4px; }
-.cost-value-wrap { text-align: right; }
-.cost-value { font-size: 24px; font-weight: 700; color: var(--text1); letter-spacing: -0.02em; }
-.cost-value.empty { font-size: 18px; font-weight: 400; color: var(--text3); }
-.cost-fee { font-size: 11px; color: var(--text3); margin-top: 4px; display: flex; flex-direction: column; gap: 2px; align-items: flex-end; }
+/* ── Divider ── */
+.n-divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
-/* ── Shipping Toggle ── */
-.shipping-toggle {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 16px 20px 0;
-  border-top: 1px solid rgba(40,32,100,0.06);
-  cursor: pointer; user-select: none;
+/* ── Callout (採購成本) ── */
+.callout {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  background: var(--hover); border-radius: var(--r);
+  padding: 12px 16px; margin: 12px 0; gap: 12px;
 }
-.shipping-toggle .st-label { font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); transition: color 200ms; }
-.shipping-toggle:hover .st-label { color: var(--text2); }
-.shipping-toggle .st-chevron { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: var(--text3); transition: transform 300ms var(--ease); }
-.shipping-toggle .st-chevron svg { width: 11px; height: 11px; }
-.shipping-toggle.open .st-chevron { transform: rotate(90deg); }
-.shipping-toggle.open .st-label { color: var(--text2); }
-.shipping-panel { overflow: hidden; max-height: 0; opacity: 0; transition: max-height 350ms var(--ease), opacity 250ms var(--ease); }
-.shipping-panel.open { max-height: 320px; opacity: 1; }
-.shipping-panel-inner { padding: 16px 20px 4px; }
+.callout-label { font-size: 13px; color: var(--text2); padding-top: 4px; }
+.callout-value-wrap { text-align: right; }
+.callout-value { font-size: 22px; font-weight: 700; color: var(--text1); letter-spacing: -0.02em; line-height: 1.2; }
+.callout-value.empty { font-size: 16px; font-weight: 400; color: var(--text3); }
+.callout-sub { font-size: 11px; color: var(--text3); margin-top: 3px; display: flex; flex-direction: column; gap: 1px; align-items: flex-end; }
+
+/* ── Toggle Rows ── */
+.toggle-row {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 4px; cursor: pointer; user-select: none;
+  border-radius: var(--r); transition: background 100ms;
+}
+.toggle-row:hover { background: var(--hover); }
+.toggle-icon {
+  width: 20px; height: 20px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text3); flex-shrink: 0;
+  transition: transform 250ms var(--ease);
+}
+.toggle-icon svg { width: 9px; height: 9px; }
+.toggle-row.open .toggle-icon { transform: rotate(90deg); }
+.toggle-label { font-size: 13px; color: var(--text2); font-weight: 500; }
+.toggle-row.open .toggle-label { color: var(--text1); }
+
+.toggle-panel { overflow: hidden; max-height: 0; opacity: 0; transition: max-height 300ms var(--ease), opacity 200ms; }
+.toggle-panel.open { max-height: 400px; opacity: 1; }
+.toggle-panel-inner { padding: 4px 0 8px 26px; }
 
 /* ── Pound Hint ── */
 .pound-hint {
   display: none; justify-content: space-between;
   font-size: 12px; color: var(--text3);
-  background: var(--bg2); border-radius: var(--r-xs);
-  padding: 8px 12px; margin-bottom: 12px;
+  background: var(--hover); border-radius: var(--r);
+  padding: 6px 10px; margin: 4px 0 8px;
 }
 
-/* ── JC Divider Block ── */
-.jc-divider-block {
-  background: #ECEFFE;
-  border-top: 2px solid var(--indigo);
-  padding: 16px 20px 20px;
+/* ── JC Block ── */
+.jc-block {
+  background: var(--orange-bg);
+  border: 1px solid rgba(217,115,13,0.2);
+  border-radius: var(--r); padding: 12px 16px; margin: 12px 0 0;
 }
-.jc-divider-label { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--indigo); opacity: .8; margin-bottom: 4px; }
-.jc-formula { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 8px 0; }
+.jc-block-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); margin-bottom: 8px; opacity: .9; }
+.jc-formula { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .jc-lbl { font-size: 13px; color: var(--text2); }
-.jc-op, .jc-eq { font-size: 18px; color: var(--text3); font-weight: 300; }
+.jc-op, .jc-eq { font-size: 16px; color: var(--text3); }
 #jc_mult {
-  width: 64px; height: 44px; text-align: center;
-  font-size: 20px; font-weight: 700; color: var(--indigo-drk);
-  background: #FFFFFF; border-color: #A8B0E8;
-  border-radius: var(--r-xs);
+  width: 60px; height: 36px; text-align: center;
+  font-size: 18px; font-weight: 700; color: var(--orange);
+  background: white; border-color: rgba(217,115,13,0.4);
 }
-#jc_mult:focus { border-color: var(--indigo); background: #FFFFFF; }
+#jc_mult:focus { border-color: var(--orange); }
 .jc-price-result { margin-left: auto; text-align: right; }
-.jc-price-result .jc-currency { font-size: 12px; color: var(--text3); }
-.jc-price-result .jc-num { font-size: 28px; font-weight: 700; color: var(--text1); letter-spacing: -0.02em; }
+.jc-price-result .jc-currency { font-size: 11px; color: var(--text3); }
+.jc-price-result .jc-num { font-size: 26px; font-weight: 700; color: var(--text1); letter-spacing: -0.02em; }
 
 /* ── Summary Metrics ── */
-.summary-metrics {
-  display: grid; grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px; margin-bottom: 12px;
-}
+.summary-section { margin: 24px 0 0; }
+.summary-title { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 12px; }
+.summary-metrics { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 8px; }
 .s-metric {
-  background: var(--surface); border-radius: var(--r-sm);
-  box-shadow: var(--sh-sm); padding: 14px 14px;
+  border: 1px solid var(--border); border-radius: var(--r);
+  padding: 12px 14px;
+  transition: background 100ms;
 }
-.s-metric.profit { background: var(--green-bg); }
-.s-metric .sm-lbl { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
+.s-metric:hover { background: var(--hover); }
+.s-metric.profit { background: var(--green-bg); border-color: rgba(15,123,108,0.2); }
+.s-metric .sm-lbl { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
 .s-metric.profit .sm-lbl { color: var(--green); opacity: .8; }
-.s-metric .sm-val { font-size: 17px; font-weight: 700; color: var(--text1); letter-spacing: -0.02em; line-height: 1.2; }
+.s-metric .sm-val { font-size: 16px; font-weight: 700; color: var(--text1); letter-spacing: -0.01em; line-height: 1.2; }
 .s-metric.profit .sm-val { color: var(--green); }
-.s-metric .sm-sub { font-size: 10px; color: var(--text3); margin-top: 3px; line-height: 1.4; }
-.s-metric.profit .sm-sub { color: var(--green); opacity: .75; }
+.s-metric .sm-sub { font-size: 10px; color: var(--text3); margin-top: 4px; line-height: 1.4; }
+.s-metric.profit .sm-sub { color: var(--green); opacity: .7; }
 
-/* ── Breakdown Accordion ── */
-.breakdown-toggle {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 16px 20px; cursor: pointer; user-select: none;
-  background: var(--surface); border-radius: var(--r-sm);
-  box-shadow: var(--sh-sm);
-  transition: background 200ms;
+/* ── Breakdown Table ── */
+.breakdown-toggle-row {
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 4px; cursor: pointer; user-select: none;
+  border-radius: var(--r); transition: background 100ms;
 }
-.breakdown-toggle:hover { background: var(--surface2); }
-.breakdown-toggle .bt-label { font-size: 14px; font-weight: 500; color: var(--text2); }
-.breakdown-toggle .bt-val { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; color: var(--text1); }
-.breakdown-toggle .bt-chevron { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; color: var(--text3); transition: transform 300ms var(--ease); }
-.breakdown-toggle .bt-chevron svg { width: 10px; height: 10px; }
-.breakdown-toggle.open .bt-chevron { transform: rotate(90deg); }
-.breakdown-panel { overflow: hidden; max-height: 0; opacity: 0; transition: max-height 350ms var(--ease), opacity 250ms var(--ease); }
+.breakdown-toggle-row:hover { background: var(--hover); }
+.breakdown-toggle-row .toggle-icon { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; color: var(--text3); flex-shrink: 0; transition: transform 250ms var(--ease); }
+.breakdown-toggle-row .toggle-icon svg { width: 9px; height: 9px; }
+.breakdown-toggle-row.open .toggle-icon { transform: rotate(90deg); }
+.breakdown-toggle-row .bt-label { font-size: 13px; color: var(--text2); font-weight: 500; flex: 1; }
+.breakdown-toggle-row.open .bt-label { color: var(--text1); }
+.breakdown-toggle-row .bt-val { font-size: 14px; font-weight: 600; color: var(--text1); }
+
+.breakdown-panel { overflow: hidden; max-height: 0; opacity: 0; transition: max-height 300ms var(--ease), opacity 200ms; }
 .breakdown-panel.open { max-height: 400px; opacity: 1; }
-.breakdown {
-  background: var(--surface); border-radius: 0 0 var(--r-sm) var(--r-sm);
-  padding: 0 20px; box-shadow: var(--sh-sm);
-  border-top: 1px solid rgba(40,32,100,0.06);
+.breakdown { padding: 0 0 4px 26px; }
+.b-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 7px 8px; font-size: 13px; border-radius: var(--r);
+  transition: background 100ms;
 }
-.b-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(40,32,100,0.06); font-size: 14px; }
-.b-row:last-child { border-bottom: none; }
+.b-row:hover { background: var(--hover); }
 .b-row .bl { color: var(--text2); }
-.b-row .bv { font-weight: 500; color: var(--text1); }
-.b-row.b-suggest .bl { color: var(--indigo); }
-.b-row.b-suggest .bv { color: var(--indigo); font-size: 15px; }
+.b-row .bv { color: var(--text1); font-weight: 500; }
 
 /* ── Preset Buttons ── */
-.preset-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
-.preset-row .lbl { font-size: 12px; color: var(--text3); white-space: nowrap; font-weight: 500; }
+.preset-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.preset-row .lbl { font-size: 12px; color: var(--text3); white-space: nowrap; }
 .preset-btn {
-  font-size: 12px; font-weight: 500; font-family: var(--font);
-  padding: 5px 12px; border-radius: var(--r-pill);
-  border: 1.5px solid rgba(60,40,20,0.12);
-  background: transparent; color: var(--text3); cursor: pointer;
-  transition: all 200ms var(--ease);
+  font-size: 12px; font-family: var(--font);
+  padding: 3px 10px; border-radius: var(--r);
+  border: 1px solid var(--border);
+  background: transparent; color: var(--text2); cursor: pointer;
+  transition: all 150ms;
 }
-.preset-btn:hover { border-color: var(--indigo); color: var(--indigo); background: var(--indigo-bg); }
-.preset-btn.active { border-color: var(--indigo); color: var(--indigo-drk); background: var(--indigo-bg); }
+.preset-btn:hover { background: var(--hover); color: var(--text1); border-color: var(--border-md); }
+.preset-btn.active { background: var(--blue-bg); color: var(--blue-drk); border-color: var(--blue); font-weight: 500; }
 
-/* ── Copy Button ── */
+/* ── Copy Button — Notion primary button ── */
 .copy-btn {
-  width: 100%; height: 56px; margin-top: 16px;
-  background: var(--text1); color: #FFF;
-  border: none; border-radius: var(--r-pill);
-  font-size: 15px; font-weight: 700; font-family: var(--font);
-  letter-spacing: 0.04em; cursor: pointer;
-  box-shadow: var(--sh-md);
-  transition: all 300ms var(--ease);
+  width: 100%; height: 44px; margin-top: 24px;
+  background: var(--blue); color: #fff;
+  border: none; border-radius: var(--r);
+  font-size: 14px; font-weight: 500; font-family: var(--font);
+  cursor: pointer; letter-spacing: 0.02em;
+  transition: background 150ms, opacity 150ms;
 }
-.copy-btn:hover { background: var(--indigo); box-shadow: var(--sh-lg); transform: translateY(-1px); }
-.copy-btn:active { transform: scale(0.98); box-shadow: var(--sh-sm); }
+.copy-btn:hover { background: var(--blue-drk); }
+.copy-btn:active { opacity: 0.85; }
 .copy-btn.copied { background: var(--green); }
+
+/* ── Suggest Mode Card ── */
+.suggest-card { border: 1px solid var(--border); border-radius: var(--r); padding: 16px; margin: 0 0 8px; }
 
 /* ── Records ── */
 #tab-records { display: none; }
 .rec-empty { padding: 48px 0; text-align: center; color: var(--text3); font-size: 14px; line-height: 2; }
 .rec-list { margin-bottom: 16px; }
-.rec-card { background: var(--surface); border-radius: var(--r-md); box-shadow: var(--sh-sm); padding: 16px; margin-bottom: 10px; }
-.rec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.rec-card { border: 1px solid var(--border); border-radius: var(--r); padding: 14px; margin-bottom: 6px; transition: background 100ms; }
+.rec-card:hover { background: var(--hover); }
+.rec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
 .rec-time { font-size: 11px; color: var(--text3); }
-.rec-badge { font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: var(--r-pill); background: var(--surface2); color: var(--text3); }
-.rec-badge.jc { background: var(--gold-bg); color: var(--gold-dark); }
+.rec-badge { font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 7px; border-radius: var(--r); border: 1px solid var(--border); color: var(--text3); background: var(--hover); }
+.rec-badge.jc { background: var(--orange-bg); color: var(--orange); border-color: rgba(217,115,13,0.2); }
 .rec-info { font-size: 12px; color: var(--text2); margin-bottom: 10px; }
-.rec-nums { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-.rec-num { background: var(--surface2); border-radius: var(--r-xs); padding: 10px 10px; }
-.rec-num .rn-lbl { font-size: 9px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
-.rec-num .rn-val { font-size: 13px; font-weight: 700; color: var(--text1); }
-.rec-num.profit { background: var(--green-bg); }
+.rec-nums { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+.rec-num { border: 1px solid var(--border); border-radius: var(--r); padding: 8px 10px; }
+.rec-num .rn-lbl { font-size: 9px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 3px; }
+.rec-num .rn-val { font-size: 13px; font-weight: 600; color: var(--text1); }
+.rec-num.profit { background: var(--green-bg); border-color: rgba(15,123,108,0.2); }
 .rec-num.profit .rn-lbl, .rec-num.profit .rn-val { color: var(--green); }
-.rec-num.price-col { background: var(--gold-bg); }
-.rec-num.price-col .rn-lbl, .rec-num.price-col .rn-val { color: var(--gold-dark); }
-.rec-margin { font-size: 11px; color: var(--text3); margin-top: 8px; text-align: right; }
-.clear-btn { width: 100%; height: 48px; border: 1.5px solid rgba(40,32,100,0.15); border-radius: var(--r-pill); background: transparent; cursor: pointer; font-size: 13px; font-family: var(--font); font-weight: 500; color: var(--text3); transition: all 250ms; }
+.rec-num.price-col { background: var(--orange-bg); border-color: rgba(217,115,13,0.2); }
+.rec-num.price-col .rn-lbl, .rec-num.price-col .rn-val { color: var(--orange); }
+.rec-margin { font-size: 11px; color: var(--text3); margin-top: 6px; text-align: right; }
+.clear-btn { width: 100%; height: 36px; border: 1px solid var(--border); border-radius: var(--r); background: transparent; cursor: pointer; font-size: 13px; font-family: var(--font); color: var(--text2); transition: all 150ms; }
 .clear-btn:hover { border-color: var(--red); color: var(--red); }
 
 /* ── Footer ── */
-.site-footer { margin-top: 24px; padding-top: 16px; border-top: 1px solid rgba(40,32,100,0.08); }
-.site-footer p { font-size: 11px; color: var(--text3); line-height: 2; }
+.site-footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); }
+.site-footer p { font-size: 12px; color: var(--text3); line-height: 2; }
 
 /* ── Mobile ── */
 @media (max-width: 480px) {
-  .wrap { padding: 0 14px; }
-  .site-header { padding: 20px 0 20px; }
-  .card-body { padding: 0 16px 18px; }
-  .card-head { padding: 16px 16px 0; }
-  .cost-block { padding: 14px 16px; }
-  .shipping-toggle { padding: 12px 16px 0; }
-  .shipping-panel-inner { padding: 12px 16px 0; }
-  .jc-divider-block { padding: 14px 16px 16px; }
-  .breakdown-toggle { padding: 13px 16px; }
-  .breakdown { padding: 0 16px; }
-  .s-metric { padding: 12px 10px; }
-  .s-metric .sm-val { font-size: 15px; }
-  .s-metric .sm-lbl { font-size: 9px; }
+  .wrap { padding: 0 16px; }
+  .site-header { padding: 24px 0 8px; }
+  .site-header h1 { font-size: 24px; }
+  .prop-label { width: 110px; min-width: 110px; }
+  input, select { height: 40px; font-size: 16px; }
+  .callout-value { font-size: 20px; }
+  .s-metric .sm-val { font-size: 14px; }
+  .copy-btn { height: 48px; }
 }
 </style>
 </head>
@@ -335,10 +347,8 @@ input::placeholder { color: var(--text3); }
 <div class="wrap">
 
 <header class="site-header">
-  <div>
-    <h1>代購試算</h1>
-    <p>即時計算 · 一鍵複製報價</p>
-  </div>
+  <h1>代購試算</h1>
+  <p>即時計算 · 一鍵複製報價</p>
 </header>
 
 <nav class="mode-tabs" role="tablist" aria-label="品項模式">
@@ -347,72 +357,97 @@ input::placeholder { color: var(--text3); }
 </nav>
 
 <!-- 商品資訊 -->
-<div class="card">
-  <div class="card-head"><div class="card-label">商品資訊</div></div>
-  <div class="card-body">
-    <div class="grid-3">
-      <div class="field"><label>原始幣別定價</label><input type="number" id="price" min="0" step="0.01" placeholder="0" /></div>
-      <div class="field"><label>幣別</label>
-        <select id="currency" onchange="onCurrencyChange()">
-          <option value="GBP">英鎊 GBP</option>
-          <option value="USD">美金 USD</option>
-          <option value="JPY">日幣 JPY</option>
-          <option value="EUR">歐元 EUR</option>
-        </select>
-      </div>
-      <div class="field"><label>數量</label><input type="number" id="qty" value="1" min="1" step="1" /></div>
+<div class="section">
+  <div class="section-title">商品資訊</div>
+
+  <div class="grid-3" style="margin-bottom:12px;">
+    <div class="field">
+      <div class="f-label">原始幣別定價</div>
+      <input type="number" id="price" min="0" step="0.01" placeholder="0" />
     </div>
     <div class="field">
-      <label>匯率（兌 TWD）<span class="tag">可手動修改</span></label>
-      <input type="number" id="rate" min="0" step="0.001" placeholder="讀取中…" oninput="onManualRate()" />
+      <div class="f-label">幣別</div>
+      <select id="currency" onchange="onCurrencyChange()">
+        <option value="GBP">英鎊 GBP</option>
+        <option value="USD">美金 USD</option>
+        <option value="JPY">日幣 JPY</option>
+        <option value="EUR">歐元 EUR</option>
+      </select>
     </div>
-    <div class="rate-status">
-      <div class="dot spin" id="dot"></div>
-      <span class="rate-msg" id="rate-msg">正在讀取匯率…</span>
+    <div class="field">
+      <div class="f-label">數量</div>
+      <input type="number" id="qty" value="1" min="1" step="1" />
     </div>
+  </div>
 
-    <!-- 國際運費（收合） -->
-    <div class="shipping-toggle" id="shipping-toggle" onclick="toggleShipping()" role="button" aria-expanded="false">
-      <span class="st-label">國際運費</span>
-      <span class="st-chevron"><svg viewBox="0 0 10 10" fill="none"><path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  <div class="field" style="margin-bottom:8px;">
+    <div class="f-label">
+      匯率（兌 TWD）
+      <span class="tag">可手動修改</span>
     </div>
-    <div class="shipping-panel" id="shipping-panel">
-      <div class="shipping-panel-inner">
-        <div class="grid-2">
-          <div class="field"><label>商品重量（公克）</label><input type="number" id="weight_g" placeholder="輸入後自動估算" min="0" step="1" /></div>
-          <div class="field"><label>每磅運費（NT$）</label><input type="number" id="rate_per_lb" value="180" min="0" step="1" /></div>
+    <div class="rate-input-row">
+      <input type="number" id="rate" min="0" step="0.001" placeholder="讀取中…" oninput="onManualRate()" />
+      <button class="rate-shortcut" id="rate-shortcut" onclick="applyShortcutRate()" style="display:none;"></button>
+    </div>
+  </div>
+  <div class="rate-status">
+    <div class="dot spin" id="dot"></div>
+    <span class="rate-msg" id="rate-msg">正在讀取匯率…</span>
+  </div>
+
+  <!-- 國際運費 toggle -->
+  <div class="toggle-row" id="shipping-toggle" onclick="toggleShipping()" role="button" aria-expanded="false">
+    <span class="toggle-icon">
+      <svg viewBox="0 0 10 10" fill="none"><path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </span>
+    <span class="toggle-label">國際運費</span>
+  </div>
+  <div class="toggle-panel" id="shipping-panel">
+    <div class="toggle-panel-inner">
+      <div class="grid-2" style="margin-bottom:8px;">
+        <div class="field">
+          <div class="f-label">商品重量（公克）</div>
+          <input type="number" id="weight_g" placeholder="輸入後自動估算" min="0" step="1" />
         </div>
-        <div class="pound-hint" id="pound-hint">
-          <span id="lb-display">—</span>
-          <span id="shipping-auto">自動估算：NT$ —</span>
+        <div class="field">
+          <div class="f-label">每磅運費（NT$）</div>
+          <input type="number" id="rate_per_lb" value="180" min="0" step="1" />
         </div>
-        <div class="grid-2">
-          <div class="field">
-            <label>國際運費（TWD）
-              <span class="edit-badge" title="可手動覆蓋自動估算值">
-                <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M8.5 1.5l2 2L4 10H2v-2L8.5 1.5z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </span>
-            </label>
-            <input type="number" id="shipping" value="0" min="0" step="1" />
+      </div>
+      <div class="pound-hint" id="pound-hint">
+        <span id="lb-display">—</span>
+        <span id="shipping-auto">自動估算：NT$ —</span>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <div class="f-label">
+            國際運費（TWD）
+            <span class="edit-icon">
+              <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M8.5 1.5l2 2L4 10H2v-2L8.5 1.5z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
           </div>
-          <div class="field"><label>代購服務費（%）</label><input type="number" id="service_pct" value="0" min="0" max="100" step="0.5" /></div>
+          <input type="number" id="shipping" value="0" min="0" step="1" />
+        </div>
+        <div class="field">
+          <div class="f-label">代購服務費（%）</div>
+          <input type="number" id="service_pct" value="0" min="0" max="100" step="0.5" />
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 採購成本小計 -->
-  <div class="cost-block">
-    <span class="cost-label">採購成本（商品 ＋ 運費）</span>
-    <div class="cost-value-wrap">
-      <span class="cost-value empty" id="item_cost_twd">—</span>
-      <div class="cost-fee" id="cost-fee-hint" style="display:none;"></div>
+  <!-- 採購成本 -->
+  <div class="callout">
+    <span class="callout-label">採購成本（商品 ＋ 運費）</span>
+    <div class="callout-value-wrap">
+      <div class="callout-value empty" id="item_cost_twd">—</div>
+      <div class="callout-sub" id="cost-fee-hint" style="display:none;"></div>
     </div>
   </div>
 
-  <!-- Jellycat 定價（GBP + JC mode） -->
-  <div id="jc-inline" class="jc-divider-block">
-    <div class="jc-divider-label">定價</div>
+  <!-- Jellycat 定價 -->
+  <div id="jc-inline" class="jc-block">
+    <div class="jc-block-label">Jellycat 定價</div>
     <div class="jc-formula">
       <span class="jc-lbl">原價</span>
       <span class="jc-op">×</span>
@@ -427,62 +462,70 @@ input::placeholder { color: var(--text3); }
 </div>
 
 <!-- 建議售價 (Other mode) -->
-<div class="card" id="card-suggest" style="display:none;">
-  <div class="card-head"><div class="card-label">建議售價</div></div>
-  <div class="card-body">
-    <div class="preset-row">
-      <span class="lbl">目標利潤率</span>
-      <button class="preset-btn" onclick="setProfit(10)">10%</button>
-      <button class="preset-btn" onclick="setProfit(15)">15%</button>
-      <button class="preset-btn active" onclick="setProfit(20)">20%</button>
-      <button class="preset-btn" onclick="setProfit(25)">25%</button>
-      <button class="preset-btn" onclick="setProfit(30)">30%</button>
+<div class="suggest-card" id="card-suggest" style="display:none;">
+  <div class="section-title" style="padding-top:0;">建議售價</div>
+  <div class="preset-row">
+    <span class="lbl">目標利潤率</span>
+    <button class="preset-btn" onclick="setProfit(10)">10%</button>
+    <button class="preset-btn" onclick="setProfit(15)">15%</button>
+    <button class="preset-btn active" onclick="setProfit(20)">20%</button>
+    <button class="preset-btn" onclick="setProfit(25)">25%</button>
+    <button class="preset-btn" onclick="setProfit(30)">30%</button>
+  </div>
+  <div class="grid-2">
+    <div class="field">
+      <div class="f-label">目標利潤率（%）</div>
+      <input type="number" id="profit_pct" value="20" min="0" max="99" step="0.5" />
     </div>
-    <div class="grid-2">
-      <div class="field"><label>目標利潤率（%）</label><input type="number" id="profit_pct" value="20" min="0" max="99" step="0.5" /></div>
-      <div class="field"><label>建議售價（TWD）</label><input type="number" id="suggested_price" readonly /></div>
+    <div class="field">
+      <div class="f-label">建議售價（TWD）</div>
+      <input type="number" id="suggested_price" readonly />
     </div>
   </div>
 </div>
 
 <!-- 結果 -->
-<div class="summary-metrics">
-  <div class="s-metric">
-    <div class="sm-lbl">總成本</div>
-    <div class="sm-val" id="sum-total">—</div>
-    <div class="sm-sub">商品 ＋ 運費</div>
+<div class="summary-section">
+  <div class="summary-title">結果</div>
+  <div class="summary-metrics">
+    <div class="s-metric">
+      <div class="sm-lbl">總成本</div>
+      <div class="sm-val" id="sum-total">—</div>
+      <div class="sm-sub">商品 ＋ 運費</div>
+    </div>
+    <div class="s-metric">
+      <div class="sm-lbl">定價</div>
+      <div class="sm-val" id="sum-price">—</div>
+      <div class="sm-sub" id="sum-price-sub">—</div>
+    </div>
+    <div class="s-metric profit">
+      <div class="sm-lbl">預估利潤</div>
+      <div class="sm-val" id="sum-profit">—</div>
+      <div class="sm-sub" id="sum-sub">—</div>
+    </div>
   </div>
-  <div class="s-metric">
-    <div class="sm-lbl">定價</div>
-    <div class="sm-val" id="sum-price">—</div>
-    <div class="sm-sub" id="sum-price-sub">—</div>
-  </div>
-  <div class="s-metric profit">
-    <div class="sm-lbl">預估利潤</div>
-    <div class="sm-val" id="sum-profit">—</div>
-    <div class="sm-sub" id="sum-sub">—</div>
-  </div>
-</div>
 
-<div class="breakdown-toggle" id="breakdown-toggle" onclick="toggleBreakdown()" role="button" aria-expanded="false">
-  <span class="bt-label">成本明細</span>
-  <span class="bt-val">
-    <span id="b-total">—</span>
-    <span class="bt-chevron"><svg viewBox="0 0 10 10" fill="none"><path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-  </span>
-</div>
-<div class="breakdown-panel" id="breakdown-panel">
-  <div class="breakdown">
-    <div class="b-row"><span class="bl">商品成本</span><span class="bv" id="b-item">—</span></div>
-    <div class="b-row"><span class="bl">國際運費</span><span class="bv" id="b-ship">—</span></div>
-    <div class="b-row"><span class="bl">代購服務費</span><span class="bv" id="b-fee">—</span></div>
-    <div class="b-row b-suggest"><span class="bl">建議售價（毛利率）</span><span class="bv" id="b-suggest">—</span></div>
+  <div class="breakdown-toggle-row" id="breakdown-toggle" onclick="toggleBreakdown()" role="button" aria-expanded="false">
+    <span class="toggle-icon">
+      <svg viewBox="0 0 10 10" fill="none"><path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </span>
+    <span class="bt-label">定價明細</span>
+    <span class="bt-val" id="bt-price-display">—</span>
+  </div>
+  <div class="breakdown-panel" id="breakdown-panel">
+    <div class="breakdown">
+      <div class="b-row"><span class="bl">商品成本</span><span class="bv" id="b-item">—</span></div>
+      <div class="b-row"><span class="bl">國際運費</span><span class="bv" id="b-ship">—</span></div>
+      <div class="b-row"><span class="bl">代購服務費</span><span class="bv" id="b-fee">—</span></div>
+      <div class="b-row"><span class="bl">總成本</span><span class="bv" id="b-total">—</span></div>
+      <div class="b-row"><span class="bl">毛利率</span><span class="bv" id="b-margin">—</span></div>
+      <span id="b-suggest" style="display:none;"></span>
+    </div>
   </div>
 </div>
 
 <button class="copy-btn" id="copy-btn" onclick="copyReport()">複製報價摘要</button>
 
-<!-- 紀錄 -->
 <div id="tab-records">
   <div class="rec-list" id="rec-list"></div>
   <button class="clear-btn" onclick="clearRecords()">清除全部紀錄</button>
@@ -530,11 +573,33 @@ async function loadRate(currency) {
     $('rate').value = rate % 1 === 0 ? rate : parseFloat(rate.toFixed(4));
     const dateStr = date ? `（${date}）` : '';
     setStatus('ok', `市場匯率 ${dateStr} — 已帶入，可修改`);
+    updateShortcutBtn(parseFloat($('rate').value));
     calc();
   } catch {
     setStatus('err', '讀取失敗，請手動輸入。<button class="retry-btn" onclick="retryRate()">重試</button>');
     $('rate').placeholder = '請手動輸入';
   }
+}
+
+function updateShortcutBtn(rate) {
+  const btn = $('rate-shortcut');
+  if (!btn || !rate || isNaN(rate)) { if (btn) btn.style.display = 'none'; return; }
+  const rounded = Math.ceil(rate);
+  if (rounded === rate) { btn.style.display = 'none'; return; }
+  btn.textContent = rounded;
+  btn.dataset.val = rounded;
+  btn.style.display = '';
+}
+
+function applyShortcutRate() {
+  const btn = $('rate-shortcut');
+  if (!btn || !btn.dataset.val) return;
+  $('rate').value = btn.dataset.val;
+  manualRate = true;
+  $('dot').className = 'dot'; $('rate-msg').className = 'rate-msg';
+  $('rate-msg').textContent = '手動輸入';
+  btn.style.display = 'none';
+  calc();
 }
 
 function retryRate()        { manualRate = false; loadRate($('currency').value); }
@@ -571,11 +636,6 @@ function toggleShipping() {
 
 function setPageTab(tab) {
   const isCalc = tab === 'calc';
-  ['ptab-calc','ptab-records'].forEach((id,i) => {
-    const el = $(id); if (!el) return;
-    el.classList.toggle('active', i===0 ? isCalc : !isCalc);
-    el.setAttribute('aria-selected', i===0 ? isCalc : !isCalc);
-  });
   const tc = $('tab-calc'), tr = $('tab-records');
   if (tc) tc.style.display = isCalc ? '' : 'none';
   if (tr) tr.style.display = isCalc ? 'none' : '';
@@ -647,7 +707,7 @@ function calc() {
   if (rate > 0 && itemTWD > 0) {
     costEl.textContent = 'NT$ '+totalCost.toLocaleString(); costEl.classList.remove('empty');
     let lines = `<span>商品 NT$ ${Math.round(itemTWD).toLocaleString()}（含手續費 ${Math.round(feeAmt).toLocaleString()}）</span>`;
-    if (ship > 0) lines += `<span>運費 NT$ ${ship.toLocaleString()}</span>`;
+    if (ship > 0)   lines += `<span>運費 NT$ ${ship.toLocaleString()}</span>`;
     if (svcFee > 0) lines += `<span>服務費 NT$ ${svcFee.toLocaleString()}</span>`;
     feeEl.innerHTML = lines; feeEl.style.display = '';
   } else { costEl.textContent = '—'; costEl.classList.add('empty'); feeEl.style.display = 'none'; }
@@ -660,7 +720,6 @@ function calc() {
   $('sum-total').textContent = fmtTWD(total);
   $('b-item').textContent = fmtN(itemTWD); $('b-ship').textContent = fmtN(ship);
   $('b-fee').textContent = fmtN(svcFee); $('b-total').textContent = fmtN(total);
-  $('b-suggest').textContent = isNaN(suggest)?'—':'NT$ '+suggest.toLocaleString();
 
   const jcMult = parseFloat($('jc_mult').value)||54;
   const jcPrice = Math.round(price*jcMult), jcTotal = jcPrice*qty;
@@ -671,11 +730,16 @@ function calc() {
   const isJC = $('jc-inline').style.display !== 'none' && $('currency').value === 'GBP';
   if (isJC) {
     $('sum-price').textContent = fmtTWD(jcTotal); $('sum-price-sub').textContent = `原價 × ${jcMult}`;
-    $('sum-profit').textContent = fmtTWD(jcProfit); $('sum-sub').textContent = jcMargin!=='—'?`毛利率 ${jcMargin}%`:'—';
+    $('bt-price-display').textContent = fmtTWD(jcTotal);
+    $('sum-profit').textContent = fmtTWD(jcProfit);
+    $('sum-sub').textContent = jcMargin!=='—'?`毛利率 ${jcMargin}%`:'—';
+    $('b-margin').textContent = jcMargin !== '—' ? `${jcMargin}%` : '—';
   } else {
     $('sum-price').textContent = isNaN(suggest)?'—':fmtTWD(suggest); $('sum-price-sub').textContent = `毛利率 ${profitPct}%`;
+    $('bt-price-display').textContent = isNaN(suggest)?'—':fmtTWD(suggest);
     $('sum-profit').textContent = fmtTWD(profit);
     $('sum-sub').textContent = !isNaN(suggest)?`售價 ${suggest.toLocaleString()} − 成本 ${total.toLocaleString()}`:'—';
+    $('b-margin').textContent = !isNaN(suggest) && suggest > 0 ? `${profitPct}%` : '—';
   }
   const av = parseInt($('profit_pct').value);
   document.querySelectorAll('.preset-btn').forEach(b => b.classList.toggle('active', parseInt(b.textContent)===av));
@@ -684,25 +748,24 @@ function calc() {
 function copyReport() {
   const itemCostText = $('item_cost_twd').textContent.replace(/[^0-9]/g,'');
   const cur = $('currency').value;
-  const lbl = {GBP:'英鎊',USD:'美金',JPY:'日幣',EUR:'歐元'}[cur]||cur;
   const isJC = $('jc-inline').style.display !== 'none';
   const jcMult = parseFloat($('jc_mult').value)||54;
-  const shipVal = Number($('shipping').value||0), svcPctVal = parseFloat($('service_pct').value)||0;
+  const shipVal = Number($('shipping').value||0), svcFee = $('b-fee').textContent;
 
   const text = [
-    '【代購報價】',
-    `商品原價：${$('price').value} ${lbl}（${cur}）× ${$('qty').value} 件`,
+    `原價：${$('price').value} (${cur}) × ${$('qty').value}`,
     `匯率：${$('rate').value}（TWD）`,
     `商品成本：NT$ ${Number(itemCostText).toLocaleString()}（含 1.5% 手續費）`,
-    shipVal > 0 ? `國際運費：NT$ ${shipVal.toLocaleString()}` : null,
-    svcPctVal > 0 ? `代購服務費（${$('service_pct').value}%）：${$('b-fee').textContent}` : null,
     '────────────',
+    `國際運費：NT$ ${shipVal.toLocaleString()}`,
+    `代購服務費：NT$ ${svcFee}`,
     `總成本：NT$ ${$('b-total').textContent}`,
+    '────────────',
     isJC
-      ? `Jellycat ×${jcMult} 售價：NT$ ${$('jc-price').textContent}　${$('sum-sub').textContent}`
-      : `建議售價（毛利率 ${$('profit_pct').value}%）：NT$ ${Number($('suggested_price').value||0).toLocaleString()}`,
+      ? `建議定價：NT$ ${$('jc-price').textContent}`
+      : `建議定價：NT$ ${Number($('suggested_price').value||0).toLocaleString()}`,
     `預估利潤：${$('sum-profit').textContent}`
-  ].filter(l => l !== null).join('\n');
+  ].join('\n');
 
   const onSuccess = () => {
     const jcPrc = Math.round(parseFloat($('price').value||0)*jcMult);
