@@ -477,6 +477,10 @@ input::placeholder { color: var(--text3); font-size: 14px; }
       <span class="callout-row-label">國際運費</span>
       <span class="callout-row-val" id="callout-ship">—</span>
     </div>
+    <div class="callout-row">
+      <span class="callout-row-label">代購服務費</span>
+      <span class="callout-row-val" id="callout-svc">—</span>
+    </div>
     <div class="callout-divider"></div>
     <div class="callout-row callout-total">
       <span class="callout-row-label">採購成本</span>
@@ -749,15 +753,17 @@ function calc() {
 
   const costEl = $('item_cost_twd'), feeEl = $('cost-fee-hint');
   if (rate > 0 && itemTWD > 0) {
-    costEl.textContent = 'NT$ '+totalCost.toLocaleString(); costEl.classList.remove('empty');
-    feeEl.style.display = 'none'; // 不再需要 sub hint
+    costEl.textContent = 'NT$ ' + totalCost.toLocaleString(); costEl.classList.remove('empty');
+    feeEl.style.display = 'none';
     $('callout-item').textContent = 'NT$ ' + Math.round(itemTWD).toLocaleString();
     $('callout-ship').textContent = 'NT$ ' + ship.toLocaleString();
+    $('callout-svc').textContent  = 'NT$ ' + svcFee.toLocaleString();
   } else {
     costEl.textContent = '—'; costEl.classList.add('empty');
     feeEl.style.display = 'none';
     $('callout-item').textContent = '—';
     $('callout-ship').textContent = '—';
+    $('callout-svc').textContent  = '—';
   }
 
   const total = totalCost;
