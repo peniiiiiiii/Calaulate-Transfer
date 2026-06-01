@@ -170,15 +170,21 @@ input::placeholder { color: var(--text3); font-size: 14px; }
 
 /* ── Callout (採購成本) ── */
 .callout {
-  display: flex; align-items: flex-start; justify-content: space-between;
   background: var(--hover); border-radius: var(--r);
-  padding: 12px 16px; margin: 12px 0; gap: 12px;
+  padding: 12px 16px; margin: 12px 0;
+  display: flex; flex-direction: column; gap: 6px;
 }
-.callout-label { font-size: 13px; color: var(--text2); padding-top: 4px; }
+.callout-row {
+  display: flex; justify-content: space-between; align-items: center;
+}
+.callout-row-label { font-size: 13px; color: var(--text2); }
+.callout-row-val   { font-size: 13px; color: var(--text2); font-weight: 500; }
+.callout-divider   { border-top: 1px solid var(--border-md); margin: 4px 0; }
+.callout-total .callout-row-label { font-size: 14px; font-weight: 600; color: var(--text1); }
 .callout-value-wrap { text-align: right; }
-.callout-value { font-size: 22px; font-weight: 700; color: var(--text1); letter-spacing: -0.02em; line-height: 1.2; }
-.callout-value.empty { font-size: 16px; font-weight: 400; color: var(--text3); }
-.callout-sub { font-size: 11px; color: var(--text3); margin-top: 3px; display: flex; flex-direction: column; gap: 1px; align-items: flex-end; }
+.callout-value { font-size: 18px; font-weight: 700; color: var(--text1); letter-spacing: -0.02em; line-height: 1.2; }
+.callout-value.empty { font-size: 15px; font-weight: 400; color: var(--text3); }
+.callout-sub { font-size: 11px; color: var(--text3); margin-top: 2px; display: flex; flex-direction: column; gap: 1px; align-items: flex-end; }
 
 /* ── Toggle Rows ── */
 .toggle-row {
@@ -326,6 +332,31 @@ input::placeholder { color: var(--text3); font-size: 14px; }
 .clear-btn { width: 100%; height: 36px; border: 1px solid var(--border); border-radius: var(--r); background: transparent; cursor: pointer; font-size: 13px; font-family: var(--font); color: var(--text2); transition: all 150ms; }
 .clear-btn:hover { border-color: var(--red); color: var(--red); }
 
+/* ── Sticky Bar (mobile) ── */
+.sticky-bar { margin-top: 24px; }
+
+@media (max-width: 480px) {
+  .sticky-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 12px 16px 24px;
+    margin: 0;
+    z-index: 100;
+  }
+  /* breakdown 向上展開 */
+  .breakdown-panel.open { max-height: 280px; }
+  /* 讓內容不被 sticky bar 遮住 */
+  body { padding-bottom: 280px; }
+
+  .summary-title { padding-top: 0; margin-bottom: 8px; }
+  .summary-metrics { gap: 6px; margin-bottom: 6px; }
+  .s-metric { padding: 10px 10px; }
+  .s-metric .sm-val { font-size: 14px; }
+  .s-metric .sm-lbl { font-size: 9px; }
+  .copy-btn { height: 48px; margin-top: 10px; }
+}
+
 /* ── Footer ── */
 .site-footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); }
 .site-footer p { font-size: 12px; color: var(--text3); line-height: 2; }
@@ -438,10 +469,21 @@ input::placeholder { color: var(--text3); font-size: 14px; }
 
   <!-- 採購成本 -->
   <div class="callout">
-    <span class="callout-label">採購成本（商品 ＋ 運費）</span>
-    <div class="callout-value-wrap">
-      <div class="callout-value empty" id="item_cost_twd">—</div>
-      <div class="callout-sub" id="cost-fee-hint" style="display:none;"></div>
+    <div class="callout-row">
+      <span class="callout-row-label">商品金額（含 1.5% 手續費）</span>
+      <span class="callout-row-val" id="callout-item">—</span>
+    </div>
+    <div class="callout-row">
+      <span class="callout-row-label">國際運費</span>
+      <span class="callout-row-val" id="callout-ship">—</span>
+    </div>
+    <div class="callout-divider"></div>
+    <div class="callout-row callout-total">
+      <span class="callout-row-label">採購成本</span>
+      <div class="callout-value-wrap">
+        <div class="callout-value empty" id="item_cost_twd">—</div>
+        <div class="callout-sub" id="cost-fee-hint" style="display:none;"></div>
+      </div>
     </div>
   </div>
 
@@ -484,47 +526,49 @@ input::placeholder { color: var(--text3); font-size: 14px; }
   </div>
 </div>
 
-<!-- 結果 -->
-<div class="summary-section">
-  <div class="summary-title">結果</div>
-  <div class="summary-metrics">
-    <div class="s-metric">
-      <div class="sm-lbl">總成本</div>
-      <div class="sm-val" id="sum-total">—</div>
-      <div class="sm-sub">商品 ＋ 運費</div>
+<!-- 結果（mobile sticky） -->
+<div class="sticky-bar">
+  <div class="summary-section">
+    <div class="summary-title">結果</div>
+    <div class="summary-metrics">
+      <div class="s-metric">
+        <div class="sm-lbl">總成本</div>
+        <div class="sm-val" id="sum-total">—</div>
+        <div class="sm-sub">商品 ＋ 運費</div>
+      </div>
+      <div class="s-metric">
+        <div class="sm-lbl">定價</div>
+        <div class="sm-val" id="sum-price">—</div>
+        <div class="sm-sub" id="sum-price-sub">—</div>
+      </div>
+      <div class="s-metric profit">
+        <div class="sm-lbl">預估利潤</div>
+        <div class="sm-val" id="sum-profit">—</div>
+        <div class="sm-sub" id="sum-sub">—</div>
+      </div>
     </div>
-    <div class="s-metric">
-      <div class="sm-lbl">定價</div>
-      <div class="sm-val" id="sum-price">—</div>
-      <div class="sm-sub" id="sum-price-sub">—</div>
+
+    <div class="breakdown-toggle-row" id="breakdown-toggle" onclick="toggleBreakdown()" role="button" aria-expanded="false">
+      <span class="toggle-icon">
+        <svg viewBox="0 0 10 10" fill="none"><path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <span class="bt-label">定價明細</span>
+      <span class="bt-val" id="bt-price-display">—</span>
     </div>
-    <div class="s-metric profit">
-      <div class="sm-lbl">預估利潤</div>
-      <div class="sm-val" id="sum-profit">—</div>
-      <div class="sm-sub" id="sum-sub">—</div>
+    <div class="breakdown-panel" id="breakdown-panel">
+      <div class="breakdown">
+        <div class="b-row"><span class="bl">商品成本</span><span class="bv" id="b-item">—</span></div>
+        <div class="b-row"><span class="bl">國際運費</span><span class="bv" id="b-ship">—</span></div>
+        <div class="b-row"><span class="bl">代購服務費</span><span class="bv" id="b-fee">—</span></div>
+        <div class="b-row"><span class="bl">總成本</span><span class="bv" id="b-total">—</span></div>
+        <div class="b-row"><span class="bl">毛利率</span><span class="bv" id="b-margin">—</span></div>
+        <span id="b-suggest" style="display:none;"></span>
+      </div>
     </div>
   </div>
 
-  <div class="breakdown-toggle-row" id="breakdown-toggle" onclick="toggleBreakdown()" role="button" aria-expanded="false">
-    <span class="toggle-icon">
-      <svg viewBox="0 0 10 10" fill="none"><path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </span>
-    <span class="bt-label">定價明細</span>
-    <span class="bt-val" id="bt-price-display">—</span>
-  </div>
-  <div class="breakdown-panel" id="breakdown-panel">
-    <div class="breakdown">
-      <div class="b-row"><span class="bl">商品成本</span><span class="bv" id="b-item">—</span></div>
-      <div class="b-row"><span class="bl">國際運費</span><span class="bv" id="b-ship">—</span></div>
-      <div class="b-row"><span class="bl">代購服務費</span><span class="bv" id="b-fee">—</span></div>
-      <div class="b-row"><span class="bl">總成本</span><span class="bv" id="b-total">—</span></div>
-      <div class="b-row"><span class="bl">毛利率</span><span class="bv" id="b-margin">—</span></div>
-      <span id="b-suggest" style="display:none;"></span>
-    </div>
-  </div>
+  <button class="copy-btn" id="copy-btn" onclick="copyReport()">複製報價摘要</button>
 </div>
-
-<button class="copy-btn" id="copy-btn" onclick="copyReport()">複製報價摘要</button>
 
 <div id="tab-records">
   <div class="rec-list" id="rec-list"></div>
@@ -706,11 +750,15 @@ function calc() {
   const costEl = $('item_cost_twd'), feeEl = $('cost-fee-hint');
   if (rate > 0 && itemTWD > 0) {
     costEl.textContent = 'NT$ '+totalCost.toLocaleString(); costEl.classList.remove('empty');
-    let lines = `<span>商品 NT$ ${Math.round(itemTWD).toLocaleString()}（含手續費 ${Math.round(feeAmt).toLocaleString()}）</span>`;
-    if (ship > 0)   lines += `<span>運費 NT$ ${ship.toLocaleString()}</span>`;
-    if (svcFee > 0) lines += `<span>服務費 NT$ ${svcFee.toLocaleString()}</span>`;
-    feeEl.innerHTML = lines; feeEl.style.display = '';
-  } else { costEl.textContent = '—'; costEl.classList.add('empty'); feeEl.style.display = 'none'; }
+    feeEl.style.display = 'none'; // 不再需要 sub hint
+    $('callout-item').textContent = 'NT$ ' + Math.round(itemTWD).toLocaleString();
+    $('callout-ship').textContent = 'NT$ ' + ship.toLocaleString();
+  } else {
+    costEl.textContent = '—'; costEl.classList.add('empty');
+    feeEl.style.display = 'none';
+    $('callout-item').textContent = '—';
+    $('callout-ship').textContent = '—';
+  }
 
   const total = totalCost;
   const suggest = profitPct < 100 ? Math.round(total/(1-profitPct/100)) : NaN;
@@ -755,10 +803,10 @@ function copyReport() {
   const text = [
     `原價：${$('price').value} (${cur}) × ${$('qty').value}`,
     `匯率：${$('rate').value}（TWD）`,
-    `商品成本：NT$ ${Number(itemCostText).toLocaleString()}（含 1.5% 手續費）`,
+    `商品金額：NT$ ${Number(itemCostText).toLocaleString()}（含 1.5% 手續費）`,
     '────────────',
     `國際運費：NT$ ${shipVal.toLocaleString()}`,
-    `代購服務費：NT$ ${svcFee}`,
+    `代購服務費：NT$ ${$('b-fee').textContent}`,
     `總成本：NT$ ${$('b-total').textContent}`,
     '────────────',
     isJC
